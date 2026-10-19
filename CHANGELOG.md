@@ -108,13 +108,43 @@ For each area: what upstream ReactOS has at the base commit, then what reactos-n
 - Windows-style legacy links (`Documents and Settings`, `Default`, `ProgramData`).
 - `DeleteProfile` works and refuses to delete a loaded profile. Upstream's version cannot succeed.
 
+#### Disk Management
+
+**ReactOS master ([`ac1ab9e3043`](https://github.com/reactos/reactos/commit/ac1ab9e3043)):**
+- Only the `diskmgmt.msc` console file; there is no Disk Management implementation.
+
+**reactos-nitro 2026.10.1:**
+- Disk Management (`diskmgmt.msc`) with a Windows-like disk list and graphical layout view.
+- Covers basic, extended and GPT disks, SAS disks and optical drives.
+- Disk operations:
+  - initialize a disk (MBR or GPT);
+  - create, delete and format volumes;
+  - shrink and extend volumes in place;
+  - change drive letters and mount points.
+- Windows 7-style dialogs and wizards.
+- Write safety: changes are planned against the disk layout the user saw, and are re-checked before writing.
+- `SetVolumeMountPointW` and `DeleteVolumeMountPointW` implemented in kernel32.
+
+#### Internet Explorer and the web stack
+
+**ReactOS master ([`ac1ab9e3043`](https://github.com/reactos/reactos/commit/ac1ab9e3043)):**
+- Wine-based `iexplore` with mshtml/urlmon/wininet. Wine Gecko is not provided on amd64.
+
+**reactos-nitro 2026.10.1:**
+- Wine Gecko is provided on amd64, and `iexplore` offers to install Gecko when it's missing.
+- File downloads work: download dialogs and engine in ieframe, `DoFileDownload` from shdocvw, and content the page can't show is handed to the download path.
+- Fixes:
+  - urlmon tasks queued during a read are now run;
+  - wininet fails stalled reads after the timeout and reports damaged gzip bodies like Windows;
+  - raw HTTP headers are read as ANSI;
+  - saving an Internet shortcut whose properties are open works.
+
 #### Other
 
 **reactos-nitro 2026.10.1:**
 - ARM3 commit charging with a commit limit, so over-commit fails with STATUS_COMMITMENT_LIMIT, plus special-pool debugging.
 - LCD text rendering and bundled open fonts.
 - Crash dumps, Application Error event 1000 and a Windows 7-style crash dialog.
-- Disk Management.
 - Wine syncs (Media Foundation, kernel32 profile, setupapi) and upstream sync #2.
 
 ### Fixed upstream ReactOS JIRA reports
