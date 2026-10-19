@@ -6,11 +6,11 @@ This is written in good faith from the public ReactOS commit history; it is our 
 
 ## What upstream is actively working on that overlaps with us
 
-- **NTFS write and install.** Upstream has added experimental NTFS write and NTFS install support to its own `ntfs` driver (e.g. #9316, #9319, #9700) and is still improving it.
+- **NTFS write and install.** Upstream has added experimental NTFS write and NTFS install support to its own `ntfs` driver (e.g. [#9316](https://github.com/reactos/reactos/pull/9316), [#9319](https://github.com/reactos/reactos/pull/9319), [#9700](https://github.com/reactos/reactos/pull/9700)) and is still improving it.
 - **SMP / APIC.** Ongoing HAL work (for example x2APIC support).
-- **USB3.** A new USB3 stack is being built (xHCI/UCX, #9623).
+- **USB3.** A new USB3 stack is being built (xHCI/UCX, [#9623](https://github.com/reactos/reactos/pull/9623)).
 - **MMC.** A new Microsoft Management Console implementation is in progress.
-- **Shell.** Continuing shell work (for example IShellItem2, #9692).
+- **Shell.** Continuing shell work (for example IShellItem2, [#9692](https://github.com/reactos/reactos/pull/9692)).
 
 Several of these are areas where we also have work. Our intent is to converge with upstream, not to compete: as upstream's version of a feature matures, we expect to drop ours in favour of it.
 
