@@ -14,7 +14,7 @@ Draft of 2026-10-19. Not tagged, not published. The name still needs a trademark
 
 ### Highlights
 
-524 fix branches and several feature stacks, 2,274 non-merge commits on top of upstream ReactOS `ac1ab9e3043`.
+534 fix branches and several feature stacks, 2,274 non-merge commits on top of upstream ReactOS `ac1ab9e3043`.
 
 - Run 32-bit Windows programs on the 64-bit build (WoW64); Total Commander and Firefox ESR, each as 32-bit and 64-bit side by side, are the proof. Upstream has no WoW64.
 - A new NTFS driver, built on the Linux kernel's `fs/ntfs` with our own journal and power-cut recovery; NTFS is the default file system.
@@ -44,7 +44,7 @@ For each area: what upstream ReactOS has at the base commit, then what reactos-n
 #### NTFS
 
 **ReactOS master ([`ac1ab9e3043`](https://github.com/reactos/reactos/commit/ac1ab9e3043)):**
-- The original ReactOS NTFS driver, with many operations still unimplemented and no page-file support.
+- The original ReactOS NTFS driver. It now has NTFS install support and EXPERIMENTAL write, but write is off by default (enabled only via a registry value literally named `MyDataDoesNotMatterSoEnableExperimentalWriteSupportForEveryNTFSVolume`), partial (several operations still return STATUS_NOT_IMPLEMENTED), and has no journaling or power-cut recovery.
 
 **reactos-nitro 2026.10.1:**
 - `ntfsng`, a read/write NTFS driver built on the Linux kernel's `fs/ntfs` ([Linux v7.3-rc6](https://github.com/tomassrnka/reactos/commit/77c12ef7d52bc291a0243ef5aeac1fa79c8b69cd), imported unmodified; GPL-2.0-or-later except two MIT files), running through a compatibility layer.
@@ -173,7 +173,7 @@ These reactos-nitro fixes address bugs reported in the [ReactOS JIRA](https://ji
 
 ## Bug fixes
 
-531 fixes: one line for each of the 524 fix branches merged into Nitro main and each of 7 small fixes committed directly on main, grouped by area (click an area to open it). The wording comes from the fix's own commit message; security-related fixes are described only generically. Each branch name links to its last commit on GitHub, and a ReactOS JIRA ticket is named where we found a clear match.
+541 fixes: one line for each of the 534 fix branches merged into Nitro main and each of 7 small fixes committed directly on main, grouped by area (click an area to open it). The wording comes from the fix's own commit message; security-related fixes are described only generically. Each branch name links to its last commit on GitHub, and a ReactOS JIRA ticket is named where we found a clear match.
 
 <details><summary>Kernel: Ke, HAL and amd64 (32 fixes)</summary>
 
@@ -415,12 +415,13 @@ These reactos-nitro fixes address bugs reported in the [ReactOS JIRA](https://ji
 
 </details>
 
-<details><summary>WoW64 (24 fixes)</summary>
+<details><summary>WoW64 (27 fixes)</summary>
 
 - CMAKE: Keep WoW64 table generation out of default native builds ([fix/wow64-native-i386-stubs](https://github.com/tomassrnka/reactos/commit/427fc062520d7e3b17ff659b3069c161e2e53d29))
 - MSI: Treat a failed window enumeration like an incomplete list ([fix/msi-wow64-ca-honest](https://github.com/tomassrnka/reactos/commit/30b77862d886031f32fa6c5a93011c462c8a9da3))
 - NTDLL: Initialize the native TLS list in WoW64 processes ([fix/wow64-tc32-tlslist](https://github.com/tomassrnka/reactos/commit/c8ac8e964823995f0372e99d61140a4ed1045552))
 - NTDLL/WOW64: Keep the guest APC routine out of the callee's home space ([fix/wow64-ff32-apc-home-space](https://github.com/tomassrnka/reactos/commit/029c1d6e96cac503d72d1e0f0ad09364afd70b83))
+- NTDLL/WOW64: Give the guest system call stubs the NT 5.2 x64 WOW64 layout ([fix/wow64-guest-stub-layout](https://github.com/tomassrnka/reactos/commit/0e7370f326e999ed65f7dd791462344ad87de2d6))
 - NTOS:KE: Load the WoW64 FS base of a thread attached to another process ([fix/wow64-tc32-cmteb](https://github.com/tomassrnka/reactos/commit/6a317eb5731f82f6c6f6f873245359b3637cb378))
 - NTOS:PS: Declare the WoW64 flag of PspSetProcessTlsInformation only where it is used ([fix/wow64-ff32-dynamic-tls](https://github.com/tomassrnka/reactos/commit/5f549a72d6f88fb0f25ff3e42df4f5f12a47a86d))
 - NTUSER: Keep the client area when the frame changes in place ([fix/wow64-tc32-lister-framechanged](https://github.com/tomassrnka/reactos/commit/e124449b5127881897433df4335e711f0408a26d))
@@ -430,6 +431,8 @@ These reactos-nitro fixes address bugs reported in the [ReactOS JIRA](https://ji
 - WOW64: Grow the guest stack before any local of the exception dispatch is written ([fix/wow64-ff32-exception-stack-limit](https://github.com/tomassrnka/reactos/commit/5d6a5dd48e6cfae42e620e2884c82ac119b42712))
 - WOW64: Give the first guest thread a growable stack with a guard page ([fix/wow64-first-thread-stack-guard](https://github.com/tomassrnka/reactos/commit/ed5408f5a26ecb9b3e9e2ed33243ca2075ae324c))
 - WOW64: Translate NtRaiseHardError ([fix/wow64-tc32-crashreport](https://github.com/tomassrnka/reactos/commit/c9c523c631b56034f622ec27f36c93805d64503e))
+- WOW64: fix a security-related bug ([fix/wow64-token-dacl-label](https://github.com/tomassrnka/reactos/commit/ac2fecbf6d6654c59df726552d8d7f4e5da8c1a6))
+- WOW64/USER32: Review follow-up for the idle message loop test ([fix/wow64-idle-loop-followups](https://github.com/tomassrnka/reactos/commit/c57e3f7cbae890d97d1a29106ae6a354d3fc97ec))
 - WOW64WIN: Keep the transition guard set on a popped callback frame ([fix/wow64-callback-return-intransition](https://github.com/tomassrnka/reactos/commit/1cc03ad63d92ef02ce15d6234fc67c0c1cd6b3e4))
 - WOW64WIN: Guard checked-build-only services instead of dropping them ([fix/wow64-p3-l1-gen-dbg](https://github.com/tomassrnka/reactos/commit/133d8804260790900b2d9d63b33d8c98b4a2a6a5))
 - WOW64WIN: fix a security-related bug ([fix/wow64-p3-l2-ime-probe](https://github.com/tomassrnka/reactos/commit/610e5567882d0e33c528e1db8b2dcfc9c53ee87a))
@@ -528,7 +531,7 @@ These reactos-nitro fixes address bugs reported in the [ReactOS JIRA](https://ji
 
 </details>
 
-<details><summary>Shell, explorer and common controls (49 fixes)</summary>
+<details><summary>Shell, explorer and common controls (50 fixes)</summary>
 
 - BROWSEUI: Keep the last results and the final status of a finished search ([fix/shellfind-search-complete](https://github.com/tomassrnka/reactos/commit/4b089240d68d289edb6c003eb078aa093c7ab2ae))
 - BROWSEUI/EXPLORER: Keep the taskbar toolbars across logons ([fix/taskbar-toolbars-persist-v3](https://github.com/tomassrnka/reactos/commit/32d75e0450ce5d6e90b68a1cdc4a9bc61e6ced04))
@@ -573,6 +576,7 @@ These reactos-nitro fixes address bugs reported in the [ReactOS JIRA](https://ji
 - SHELL32: Keep the icon and save the comment of a shortcut ([fix/shell32-shortcut-comment-icon](https://github.com/tomassrnka/reactos/commit/976378b860678d57e67456d2d7838a3e5f7d809f))
 - SHELL32: Implement SHGetStockIconInfo and stop the NT 6 stubs from killing callers ([fix/shell32-vista-stubs](https://github.com/tomassrnka/reactos/commit/f64c9661ff0aa852bca62bf244ff53a40dd2e53e))
 - SHELL32: Add SHGetPropertyStoreForWindow ([fix/shell32-window-property-store](https://github.com/tomassrnka/reactos/commit/1e64c43806f3836e56d6b3d803a04d609abdebc9))
+- SHELL32: Do not set folder attributes when reading them failed ([fix/shellpath-attr-read-check](https://github.com/tomassrnka/reactos/commit/abe63f45ba6f98b8f360bbf0054bebbaf655147f))
 - SHELL32/USRMGR: Run as on program shortcuts; enable Reset Password ([fix/shortcut-runas-reset-password-v2](https://github.com/tomassrnka/reactos/commit/4dc803a91336157d4947a697746c9d34b9baeb7c))
 - URLMON: fix a memory-safety bug ([fix/browser-heap-corruption](https://github.com/tomassrnka/reactos/commit/78dc648bad2eab7eb3d5d8d3373f3382d6c24f7f))
 - USER32: Keep icon identifiers apart from the handle array on 64-bit ([fix/pickicon-sparse-grid](https://github.com/tomassrnka/reactos/commit/1b7a175ec8d46c549293eecc254c3eb76f33568c))
@@ -790,14 +794,16 @@ These reactos-nitro fixes address bugs reported in the [ReactOS JIRA](https://ji
 
 </details>
 
-<details><summary>Tests only (21 fixes)</summary>
+<details><summary>Tests only (27 fixes)</summary>
 
 - ADVAPI32_APITEST: tests for a security-related fix [test-only] ([fix/logon-user-processes](https://github.com/tomassrnka/reactos/commit/1f5ab40693d094654ee904f131bca926fdff82cd))
+- ADVAPI32_APITEST: Refill the freed capture pool in RestrictedSidsCopy [test-only] ([fix/se-restricted-sids-copy](https://github.com/tomassrnka/reactos/commit/fa3207cff016188f520adabe48a9e356296eafcd))
 - APITESTS: Link WoW64 services in static RTL tests [test-only] [pick] ([main/wow64-rtl-unittest-link](https://github.com/tomassrnka/reactos/commit/7426aa673f03210c7d54b155b8d4ee380e14c6bc))
 - CRT_APITEST: strlen: clear the direction flag before calling ok() [test-only] ([fix/rosautotest-pipe-nul-m](https://github.com/tomassrnka/reactos/commit/27a1ad93210ba2a9fd7d00c95ae9d186f6eeb0ea))
 - GDI32_APITEST: tests for a security-related fix [test-only] ([fix/d3dkmt-dcmem-probe](https://github.com/tomassrnka/reactos/commit/66bdb43cacd68820b0ece7d7422d9f506c850cc4))
 - GDI32_WINETEST: Skip the font name checks for FontSubstitutes aliases [test-only] ([fix/gdi32-font-alias-families](https://github.com/tomassrnka/reactos/commit/957f72a208e45f2e05f06529dee6fb27f27d99ee))
 - KERNEL32_APITEST: Expect the NTSTATUS in the BindIoCompletionCallback error code [test-only] ([fix/rtl-iocompletion-callback](https://github.com/tomassrnka/reactos/commit/b02e5a87455b7c2342ea00178375634d203cae20))
+- KERNEL32_APITEST: Clear the job limits with ZeroMemory in test_LimitQuery [test-only] ([fix/wow64-job-information](https://github.com/tomassrnka/reactos/commit/38b135e2ab8bba9bc60fa22250077980ccfdbd74))
 - KMTESTS:CC: Run the CcLazyWriteDelete test on ReactOS only [test-only] ([fix/cc-lazywrite-dirty-list](https://github.com/tomassrnka/reactos/commit/91f2c6249db853396d8040fe88c34593138e3615))
 - KMTESTS:CC: Test concurrent exclusive pins in CcPinRead [test-only] ([fix/cc-pin-lost-race](https://github.com/tomassrnka/reactos/commit/3097d087d36e4c9d419d966c887cdb5266608a90))
 - KMTESTS:CC: Do not pass NULL for required CcCopyRead parameters [test-only] ([fix/kmtest-cccopyread-contract](https://github.com/tomassrnka/reactos/commit/484b23f8e0669c582bccdae06214e95c0cb7b247))
@@ -811,7 +817,11 @@ These reactos-nitro fixes address bugs reported in the [ReactOS JIRA](https://ji
 - ROSAUTOTEST: Keep the --list for a module pattern that ends in "test" [test-only] ([fix/rosautotest-named-test](https://github.com/tomassrnka/reactos/commit/3aa9063d912a8970cc74089e0df617a7e2726626))
 - ROSAUTOTEST: Do not lose the rest of a run to a pipe left open by a test [test-only] ([fix/rosautotest-unique-pipe](https://github.com/tomassrnka/reactos/commit/9ebb183b5479b072e3b06356e382f02ed71cde0f))
 - SETUPAPI_APITEST: tests for a security-related fix [test-only] ([fix/pnproot-double-free](https://github.com/tomassrnka/reactos/commit/7814ea2076dfdddd3c3c5aaf0406b8a488645fdc))
+- stackoverflowthread-t1-timeout: tests for a security-related fix [test-only] ([fix/stackoverflowthread-t1-timeout](https://github.com/tomassrnka/reactos/commit/a9524479ba1002b57379c4559b6b52a2dec8f475))
+- USERENV_APITEST: Delete read-only, hidden and system entries in the DeleteProfile test [test-only] ([fix/userenv-deleteprofile-test-attrs](https://github.com/tomassrnka/reactos/commit/44a0a189344bafb96d8f47787be4e2d9adec5887))
+- USERENV_APITEST: DeleteProfile: use todo_if(is_reactos()) for the loaded-hive check [test-only] ([fix/userenv-deleteprofile-todo](https://github.com/tomassrnka/reactos/commit/12a4463321e093a864ffc3285017d3a6d507d098))
 - WIN32U_APITEST: tests for a security-related fix [test-only] ([fix/dxg-createsurface-probe](https://github.com/tomassrnka/reactos/commit/b3aadc547daf08981de5d91c4ec916ab02471798))
+- WOW64_APITEST: Give the win32k test stubs a native i386 path [test-only] ([fix/wow64-test-stubs-native-gate](https://github.com/tomassrnka/reactos/commit/cc6d95668f6aef81f142cf0f6d78efc51a52aa86))
 - WS2_32_WINETEST: Query the completion notification modes before closing the socket [test-only] ([fix/ws2-winetest-iocn-query](https://github.com/tomassrnka/reactos/commit/7ecaa32d7b71dc142c2e36c53a736b8bc18d4b28))
 
 </details>

@@ -39,9 +39,11 @@ Medians of 5 runs. "B/A" above 1 means nitro is faster; for latency, lower is be
 
 † The 106× and 11× figures reflect a slow path in the upstream build and are pending an independent re-check before they're treated as final.
 
-## NTFS (reactos-nitro only — upstream has no read/write NTFS)
+## NTFS
 
-| Test | FAT | NTFS |
+_Note: upstream ReactOS has experimental NTFS write (off by default, partial, unjournaled). The upstream-vs-nitro NTFS comparison was not run and is pending re-measurement. The table below is reactos-nitro FAT vs NTFS only._
+
+| Test (reactos-nitro) | FAT | NTFS |
 |---|---|---|
 | buffered read (MB/s) | 267 | 2,477 |
 | sequential write (MB/s) | 55.1 | 53.1 |
@@ -52,6 +54,7 @@ Medians of 5 runs. "B/A" above 1 means nitro is faster; for latency, lower is be
 
 - Preliminary build, not the release tag; re-run pending.
 - No amd64 A-vs-B (upstream amd64 doesn't install).
+- Upstream NTFS write (experimental, off by default) was not benchmarked against nitro's ntfsng; that comparison is pending.
 - The SMP comparison is upstream-uniprocessor vs nitro-multiprocessor.
 - Under heavy host load, nitro degraded more than upstream on the network tests (down to 0.54× on single-connection requests/s). At 1 vCPU, nitro was slower on download, requests/s and uncached read.
 - Disk tests measure the guest file system and cache manager over the host page cache, not raw device speed.
