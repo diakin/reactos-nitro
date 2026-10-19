@@ -57,6 +57,30 @@ Also fixed on the way: x87/FPU state handling at thread rundown and flush, singl
 
 **Other.** ARM3 commit charging with a commit limit (over-commit now fails with STATUS_COMMITMENT_LIMIT), special-pool debugging, LCD text rendering and bundled open fonts, drwtsn32 dumps with event 1000 and a Windows 7-style crash dialog, Disk Management (view, operations, wizards), Wine syncs (Media Foundation, kernel32 profile, setupapi), and upstream sync #2 (67 upstream commits).
 
+### Fixed upstream ReactOS JIRA reports
+
+These reactos-nitro fixes address bugs reported in the [ReactOS JIRA](https://jira.reactos.org). They're listed here to make porting easier. The list includes only reports that clearly describe the same bug. Some reports were already closed upstream, for example as *Won't Fix*. Fixes with possible but unconfirmed matches are not listed.
+
+| Upstream report | Summary (status at lookup) | Fixed in reactos-nitro by |
+|---|---|---|
+| [CORE-8717](https://jira.reactos.org/browse/CORE-8717) | ConvertStringSidToSid succeeds for empty string and other invalid SIDs / Reopened / Unresolved | [fix/advapi32-convert-string-sid](https://github.com/tomassrnka/reactos/commit/9bb9005936e7f4f25b4672c3eeaf7e4200f30a2c) |
+| [CORE-12498](https://jira.reactos.org/browse/CORE-12498) | telnet is looking for telnet.ini which is not distributed with ReactOS; Reopened, no resolution | [fix/telnet-install-config](https://github.com/tomassrnka/reactos/commit/b5e19db1e584c47709cc4a7b25b1e65b1ead7206) |
+| [CORE-12604](https://jira.reactos.org/browse/CORE-12604) | ReactOS executes extensionless files in PATH / Open / Unresolved | [fix/cmd-search-extensionless](https://github.com/tomassrnka/reactos/commit/a2cf87a2385c45912696d67519e596a4174dca56) |
+| [CORE-14795](https://jira.reactos.org/browse/CORE-14795) | CMD ECHO - incorrect text output to file / Untriaged / Unresolved | [fix/cmd-redirect-ansi](https://github.com/tomassrnka/reactos/commit/25a3be3914f44d06b7225f2e21cdac91bb22e5a6) |
+| [CORE-15934](https://jira.reactos.org/browse/CORE-15934) | REGRESSION: Resizing a themed window causes a classic frame to be drawn temporarily and makes the caption blink (Resolved/Fixed) | [fix/win32k-framechanged-screen-region](https://github.com/tomassrnka/reactos/commit/65fdcb4306f4ab6641b71bf3e03df3dffcd2a6bd) |
+| [CORE-16061](https://jira.reactos.org/browse/CORE-16061) | Vista Paint and Minesweeper cannot locate RegisterApplicationRestart in KERNEL32.DLL - Resolved/Postponed | [fix/kernel32-application-restart](https://github.com/tomassrnka/reactos/commit/632cc8034617b0b37c1363e672e32208f73efb34) |
+| [CORE-16273](https://jira.reactos.org/browse/CORE-16273) | IniFileMapping is not implemented - Untriaged | [fix/kernel32-profile-sync](https://github.com/tomassrnka/reactos/commit/9b644b68fd6cd4cde766f50f9efd43dd874e9690) |
+| [CORE-16444](https://jira.reactos.org/browse/CORE-16444) | Shell Find Fails on some Folders using Shell Extensions (RECYCLED or fonts) (Open) | [fix/shellfind-font-folder-results-v2](https://github.com/tomassrnka/reactos/commit/c56e3d5307a30e75516230022181244aa92c9468) |
+| [CORE-17317](https://jira.reactos.org/browse/CORE-17317) | [Kernel32] Implement missing I64 flag in format_message / Untriaged / Unresolved | [fix/kernel32-formatmessage-int64](https://github.com/tomassrnka/reactos/commit/a96335568d79b05b0ee8277326c64ab540f7d2ac) |
+| [CORE-18390](https://jira.reactos.org/browse/CORE-18390) | SPI_GETWHEELSCROLLCHARS incorrectly reported as invalid - Resolved/Postponed | [fix/win32k-wheel-scroll-chars](https://github.com/tomassrnka/reactos/commit/1e51c969ad44e733c335feea6ef3a0cd9b95120b) |
+| [CORE-18789](https://jira.reactos.org/browse/CORE-18789) | FILE_APPEND_DATA not handled correctly in NtCreateFile & friends; Untriaged/None | [fix/append-write](https://github.com/tomassrnka/reactos/commit/678833d1e2cd9a26c1b099354419977cf393455e) |
+| [CORE-19707](https://jira.reactos.org/browse/CORE-19707) | Inno Setup 6 based installers do not work / Untriaged / Unresolved | [fix/ntdll-actctx-loadfrom](https://github.com/tomassrnka/reactos/commit/53e2c8a0ee496debe89db83ff5ae52e794d8a368) |
+| [CORE-19855](https://jira.reactos.org/browse/CORE-19855) | Shortcut's 'Start in' field treated incorrectly - Open | [fix/shell32-exec-context-menu-directory](https://github.com/tomassrnka/reactos/commit/8d089d7697b4e47b9b0937297caf9c76e75397f4) |
+| [CORE-20067](https://jira.reactos.org/browse/CORE-20067) | [MAGNIFIER] Help button should be grayed out (Resolved, Won't Fix) | [fix/help-unavailable-disabled](https://github.com/tomassrnka/reactos/commit/5a03092962cdd75111e756a8604d5c4da784d3ec) |
+| [CORE-20129](https://jira.reactos.org/browse/CORE-20129) | Broken file operations when using folder starting by '...' - Open | [fix/shlwapi-path-dotdot-prefix](https://github.com/tomassrnka/reactos/commit/2264a530e0fc1ef84956ed1c9f945407adbb4670) |
+| [CORE-20687](https://jira.reactos.org/browse/CORE-20687) | [COMCTL32] Bugs when setting the title of property sheets or wizards - Untriaged | [fix/comctl32-propsheet-title](https://github.com/tomassrnka/reactos/commit/d99b70541d359a58f062d3fac4840812991db9c6) |
+| [CORE-20756](https://jira.reactos.org/browse/CORE-20756) | Notepad > Save as 'All files' adds the extension anyway - Untriaged | [fix/comdlg32-defext-keep-extension](https://github.com/tomassrnka/reactos/commit/a14b21ad5a83a3be5ef1e0b441a10b1ebb6343a2) |
+
 ## Bug fixes
 
 531 fixes: one line for each of the 524 fix branches merged into Nitro main and each of 7 small fixes committed directly on main, grouped by area (click an area to open it). The wording comes from the fix's own commit message; security-related fixes are described only generically. Each branch name links to its last commit on GitHub, and a ReactOS JIRA ticket is named where we found a clear match.
