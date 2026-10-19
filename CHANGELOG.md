@@ -114,7 +114,7 @@ For each area: what upstream ReactOS has at the base commit, then what reactos-n
 - Only the `diskmgmt.msc` console file; there is no Disk Management implementation.
 
 **reactos-nitro 2026.10.1:**
-- Disk Management (`diskmgmt.msc`) with a Windows-like disk list and graphical layout view.
+- Disk Management (`diskmgmt.msc`) as a standalone application with a Windows-like disk list and graphical layout view. It isn't built on ReactOS's in-progress MMC; porting it to MMC is planned.
 - Covers basic, extended and GPT disks, SAS disks and optical drives.
 - Disk operations:
   - initialize a disk (MBR or GPT);

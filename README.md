@@ -13,6 +13,14 @@ reactos-nitro is a large set of fixes and features maintained on top of upstream
 - **ready-to-install ISOs** for amd64 (with WoW64) and i386;
 - **the full source tree** of the release, tagged in the [development fork](https://github.com/tomassrnka/reactos).
 
+## Goals
+
+- **Usable for daily work:** real applications installed and running reliably, not only demos.
+- **Fast:** responsive on modern multi-core machines and virtual machines.
+- **Secure:** fix the security problems we find, and say plainly where protection is still missing.
+- **Actively developed:** frequent releases, each one tested and documented.
+- **In sync with upstream ReactOS:** track ReactOS master closely and merge it regularly. Keep our changes small and self-contained where possible, so the patch set stays easy to rebase and our fixes are easy to port.
+
 ## Status
 
 Pre-release. The first release, `reactos-nitro-2026.10.1`, is in preparation. Until it's published, there are no downloads here.
