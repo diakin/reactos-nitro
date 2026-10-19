@@ -27,35 +27,95 @@ Draft of 2026-10-19. Not tagged, not published. The name still needs a trademark
 - Desktop and tools: LCD text rendering, bundled open fonts, crash reports with a Windows 7-style dialog, Disk Management.
 - Not yet: the Firefox sandbox starts on 64-bit but does not restrict anything (see Limitations).
 
-### What Nitro adds on top of ReactOS `ac1ab9e3043`
+### What reactos-nitro adds on top of ReactOS
 
-For each track: what upstream ReactOS has at that commit, then what Nitro has. Upstream statements come from the upstream source tree at `ac1ab9e3043` or, where stated, from our own test runs on upstream master.
+For each area: what upstream ReactOS has at the base commit, then what reactos-nitro adds.
 
-**WoW64 (32-bit programs on 64-bit ReactOS).** Upstream: not supported; the tree has no `dll/wow64`, and kernel32's process creation still says "WOW64 is not supported yet" ([CORE-17655](https://jira.reactos.org/browse/CORE-17655)). Nitro (amd64 only, build option, on in the WoW64 ISO): SysWOW64, system-call and win32k thunks, file-system and registry redirection, and 32-bit consoles, windows, threads and process creation. Shown by Total Commander 11.58 32-bit and 64-bit side by side (smoke test passes on every Nitro main since 2026-10-18) and by Firefox ESR 128.14 32-bit and 64-bit side by side (acceptance 8/8, 25 processes, local and https pages in both, 0 bugchecks; main only).
+#### WoW64: 32-bit programs on 64-bit ReactOS
 
-**NTFS.** Upstream: the original ReactOS NTFS driver (`drivers/filesystems/ntfs`), with many operations still marked unimplemented and no page-file support. Nitro: `ntfsng`, an NTFS read/write driver built on the Linux kernel's `fs/ntfs` ([Linux tag v7.3-rc6](https://github.com/tomassrnka/reactos/commit/77c12ef7d52bc291a0243ef5aeac1fa79c8b69cd), imported unmodified; GPL-2.0-or-later except two MIT files) running through a compatibility layer, with our own journal (commit records in `$LogFile`, replayed after a power cut) and a boot-time consistency check. It is the default system file system. Two-hour soaks of about 1.5 million operations pass with 0 failures on every Nitro main since 2026-10-18, and the power-cut campaign (dm-log-writes) went from 68 failures in 519 points to 0 in 690.
+**ReactOS master ([`ac1ab9e3043`](https://github.com/reactos/reactos/commit/ac1ab9e3043)):**
+- Not supported: there is no `dll/wow64`, and process creation reports "WOW64 is not supported yet" ([CORE-17655](https://jira.reactos.org/browse/CORE-17655)).
 
-**Btrfs.** Upstream: WinBtrfs 1.8.1. Nitro: [WinBtrfs 1.10](https://github.com/maharmstone/btrfs#changelog) (the sync commit keeps its original author). That brings in WinBtrfs 1.8.2, 1.9 and 1.10:
-- the block group tree from Linux 6.1;
-- writing free-space bitmaps and compressed inline files;
-- better handling of removable devices and of out-of-memory/out-of-space errors;
-- fixes for crashes when moving files across subvolumes (such as to the Recycle Bin) and when many files are created at once;
-- fixes for extent-tree corruption when writing to snapshots, a hard-link query deadlock, and a hang under heavy load.
+**reactos-nitro 2026.10.1:**
+- 32-bit Windows programs run on the 64-bit build (amd64 only; on in the WoW64 ISO).
+- SysWOW64, system-call and win32k thunks, file-system and registry redirection, and 32-bit consoles, windows, threads and process creation.
+- Total Commander 11.58 and Firefox ESR 128, each 32-bit and 64-bit, run side by side in one session.
 
-On top of 1.10, Nitro adds its own fixes, including [`fix/btrfs-sync-1.10-main`](https://github.com/tomassrnka/reactos/commit/54e35c388a2617297197655bdbae650d6e0092f5): volumes made by current btrfs-progs (block group tree) mount, `format /FS:BTRFS` works, and drive letters stick. Tests: 12/12 volumes from btrfs-progs 7.1, 4/4 from 6.6, 4/4 from our own formatter, power cuts 8/8 and 12/12 with nothing lost.
+#### NTFS
 
-**Display.** Upstream: the VBE/Bochs `framebuf` driver draws straight into video memory (no shadow surface in the tree). Nitro (main only): a shadow framebuffer (draw into a cached surface, flush changed rectangles), plus USB UHCI polling and software-pointer fixes. On an AMD host, window dragging went from 35.9 to 59.8 moves/s while guest CPU fell from 100% to 36%, and pointer capture showed 0.00% bad frames (70-99.7% before).
+**ReactOS master ([`ac1ab9e3043`](https://github.com/reactos/reactos/commit/ac1ab9e3043)):**
+- The original ReactOS NTFS driver, with many operations still unimplemented and no page-file support.
 
-**SMP and kernel.** Upstream: on amd64 `KeStartAllProcessors` and the HAL's `HalStartNextProcessor` are stubs in the tree, so amd64 runs on one processor. On i386 an MP kernel and HAL are built, but setup runs on the single-processor kernel and so selects it (our analysis), and in our test on upstream master `de6e2153dcc` the MP kernel did not get past the boot banner (not investigated).
-Nitro: x86 and amd64 SMP kernels, and setup installs the MP kernel and HAL on ACPI machines. Boots at 1, 2, 4, 8 and 16 vCPUs (10/10 on each architecture); 4-hour web-server soaks at 8 vCPUs pass on both (amd64 117.9 M requests, i386 25.8 M, 240/240 probes, no assertion), 4-hour soaks pass on AMD and Intel hosts, and a 1-hour 16-vCPU soak passes.
-Scaling and correctness: cross-processor thread hand-off went from 176-333 ms to 1-22 us; a 16-vCPU network throughput test rose from 1.95 M to 7.89 M requests in 5 minutes after the wake-up and idle-loop work; the root cause of an Intel-only STOP 0x7E (a thread lock reported acquired without being taken) is fixed.
-Also fixed on the way: x87/FPU state handling at thread rundown and flush, single-load current-thread reads, cross-processor TLB flushes (batched and targeted to the CPUs a process uses), and amd64 kernel fixes (fast-fail vector, unexpected-interrupt EOI, NMI handling, kernel stack-overflow delivery, bad-segment exceptions). 32 fixes are listed under "Kernel: Ke, HAL and amd64" below.
+**reactos-nitro 2026.10.1:**
+- `ntfsng`, a read/write NTFS driver built on the Linux kernel's `fs/ntfs` ([Linux v7.3-rc6](https://github.com/tomassrnka/reactos/commit/77c12ef7d52bc291a0243ef5aeac1fa79c8b69cd), imported unmodified; GPL-2.0-or-later except two MIT files), running through a compatibility layer.
+- Journaling with replay after a power cut, and a boot-time consistency check.
+- NTFS is the default system file system, and setup preselects it.
 
-**Networking.** Upstream: the lwIP-based TCP/IP driver and AFD. Nitro: "network round 2" (10 commits: lwIP core lock, in-order TCP receive per adapter, fewer thread hops, reassembly locking) with 8/8 one-hour soaks on AMD and 8/8 on Intel, plus 57 networking fixes (AFD connect, accept and cancel paths, TCP/IP, Winsock, iphlpapi).
+#### Btrfs
 
-**Setup and profiles.** Upstream: NTFS install support (formatter and boot sector) and, since the base, the C:\Users layout. Nitro: graphical setup preselects NTFS (unattended NTFS installs check clean); upstream's layout adopted with fixes for shell calls that crash in upstream's stubs and a read-only Downloads folder; Windows-style legacy junctions (`Documents and Settings`, `Default`, `ProgramData`; Windows-parity test 128/0); `DeleteProfile`, which cannot succeed in upstream (inverted check), now works and refuses a loaded profile.
+**ReactOS master ([`ac1ab9e3043`](https://github.com/reactos/reactos/commit/ac1ab9e3043)):**
+- WinBtrfs 1.8.1.
 
-**Other.** ARM3 commit charging with a commit limit (over-commit now fails with STATUS_COMMITMENT_LIMIT), special-pool debugging, LCD text rendering and bundled open fonts, drwtsn32 dumps with event 1000 and a Windows 7-style crash dialog, Disk Management (view, operations, wizards), Wine syncs (Media Foundation, kernel32 profile, setupapi), and upstream sync #2 (67 upstream commits).
+**reactos-nitro 2026.10.1:**
+- [WinBtrfs 1.10](https://github.com/maharmstone/btrfs#changelog), which brings in 1.8.2, 1.9 and 1.10:
+-   - the block group tree from Linux 6.1;
+-   - writing free-space bitmaps and compressed inline files;
+-   - better handling of removable devices and of out-of-memory/out-of-space errors;
+-   - fixes for crashes when moving files across subvolumes or creating many files at once;
+-   - fixes for snapshot extent-tree corruption, a hard-link deadlock and a hang under heavy load.
+- Our own fixes on top ([`fix/btrfs-sync-1.10-main`](https://github.com/tomassrnka/reactos/commit/54e35c388a2617297197655bdbae650d6e0092f5)): volumes from current btrfs-progs mount, `format /FS:BTRFS` works, and drive letters stick.
+
+#### Display
+
+**ReactOS master ([`ac1ab9e3043`](https://github.com/reactos/reactos/commit/ac1ab9e3043)):**
+- The VBE/Bochs `framebuf` driver draws straight into video memory.
+
+**reactos-nitro 2026.10.1:**
+- A shadow framebuffer: drawing goes to a cached surface and only changed areas are copied to video memory, which makes window dragging smooth and cheap.
+- USB UHCI polling and software-pointer fixes, so pointer movement doesn't flicker.
+
+#### SMP and kernel
+
+**ReactOS master ([`ac1ab9e3043`](https://github.com/reactos/reactos/commit/ac1ab9e3043)):**
+- amd64: the processor start-up routines (`KeStartAllProcessors`, `HalStartNextProcessor`) are stubs, so amd64 runs on one processor.
+- i386: an MP kernel and HAL are built, but setup selects the single-processor kernel.
+
+**reactos-nitro 2026.10.1:**
+- Multi-processor kernels on x86 and amd64; setup installs the MP kernel and HAL on ACPI machines.
+- Tested from 1 to 16 vCPUs, with long soaks on AMD and Intel hosts.
+- Much faster cross-processor thread hand-off and wake-up.
+- A fix for the root cause of an Intel-only STOP 0x7E.
+- Fixes for x87/FPU state handling, cross-processor TLB flushes (batched and targeted), and amd64 interrupt, NMI and exception delivery.
+- 32 kernel fixes in the list below.
+
+#### Networking
+
+**ReactOS master ([`ac1ab9e3043`](https://github.com/reactos/reactos/commit/ac1ab9e3043)):**
+- The lwIP-based TCP/IP driver and AFD.
+
+**reactos-nitro 2026.10.1:**
+- A reworked receive path: lwIP core lock, in-order TCP receive per adapter, fewer thread hops and reassembly locking.
+- 57 networking fixes: AFD connect, accept and cancel paths, TCP/IP, Winsock and iphlpapi.
+
+#### Setup and user profiles
+
+**ReactOS master ([`ac1ab9e3043`](https://github.com/reactos/reactos/commit/ac1ab9e3043)):**
+- NTFS install support (formatter and boot sector) and the C:\Users profile layout.
+
+**reactos-nitro 2026.10.1:**
+- The graphical setup preselects NTFS.
+- The C:\Users layout, with fixes for shell calls that crash in upstream's stubs, and a read-only Downloads folder.
+- Windows-style legacy links (`Documents and Settings`, `Default`, `ProgramData`).
+- `DeleteProfile` works and refuses to delete a loaded profile. Upstream's version cannot succeed.
+
+#### Other
+
+**reactos-nitro 2026.10.1:**
+- ARM3 commit charging with a commit limit, so over-commit fails with STATUS_COMMITMENT_LIMIT, plus special-pool debugging.
+- LCD text rendering and bundled open fonts.
+- Crash dumps, Application Error event 1000 and a Windows 7-style crash dialog.
+- Disk Management.
+- Wine syncs (Media Foundation, kernel32 profile, setupapi) and upstream sync #2.
 
 ### Fixed upstream ReactOS JIRA reports
 
