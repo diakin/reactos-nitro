@@ -39,6 +39,8 @@ Over 520 fixes and several feature tracks on top of upstream ReactOS:
 - **Kernel and memory manager hardening**: commit charging with a commit limit, plus many Mm, cache-manager and scheduler fixes.
 - **Desktop and tools**: LCD text rendering, bundled open fonts, crash reports with a Windows-style dialog, and Disk Management.
 
+A preliminary [BENCHMARKS.md](BENCHMARKS.md) (draft) compares reactos-nitro against upstream ReactOS.
+
 A full list of changes, one line per fix, is in [CHANGELOG.md](CHANGELOG.md) (draft for the first release).
 
 ## Known limitations
