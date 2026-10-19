@@ -16,7 +16,7 @@ Several of these are areas where we also have work. Our intent is to converge wi
 
 ## Why our NTFS is a separate driver
 
-Upstream's NTFS write support exists but is **experimental**: it is off by default (enabled only through a registry value literally named `MyDataDoesNotMatterSoEnableExperimentalWriteSupportForEveryNTFSVolume`), several operations are still unimplemented, and it has no journaling or crash recovery.
+Upstream's own NTFS driver now writes, and write is **enabled by default on a normal install** (the default system hive sets the enabling registry value, [#9319](https://github.com/reactos/reactos/pull/9319)). But it is still labelled experimental — the registry value is literally named `MyDataDoesNotMatterSoEnableExperimentalWriteSupportForEveryNTFSVolume` — several operations are still unimplemented, and it has no journaling or crash/power-cut recovery.
 
 We wanted NTFS that is safe to use as the default file system **now**. So reactos-nitro uses `ntfsng`, a driver built on the Linux kernel's `fs/ntfs`, running through a compatibility layer, with journaling and power-cut recovery. It is write-enabled by default and is the default file system for new installs.
 
