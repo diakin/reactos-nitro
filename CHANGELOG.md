@@ -14,7 +14,7 @@ Draft of 2026-10-19. Not tagged, not published. The name still needs a trademark
 
 ### Highlights
 
-542 fix branches and several feature stacks, 2,308 non-merge commits on top of upstream ReactOS `ac1ab9e3043`.
+547 fix branches and several feature stacks, 2,316 non-merge commits on top of upstream ReactOS `ac1ab9e3043`.
 
 - Run 32-bit Windows programs on the 64-bit build (WoW64); Total Commander and Firefox ESR, each as 32-bit and 64-bit side by side, are the proof. Upstream has no WoW64.
 - A new NTFS driver, built on the Linux kernel's `fs/ntfs` with our own journal and power-cut recovery; NTFS is the default file system.
@@ -173,7 +173,7 @@ These reactos-nitro fixes address bugs reported in the [ReactOS JIRA](https://ji
 
 ## Bug fixes
 
-549 fixes: one line for each of the 542 fix branches merged into Nitro main and each of 7 small fixes committed directly on main, grouped by area (click an area to open it). The wording comes from the fix's own commit message; security-related fixes are described only generically. Each branch name links to its last commit on GitHub, and a ReactOS JIRA ticket is named where we found a clear match.
+554 fixes: one line for each of the 547 fix branches merged into Nitro main and each of 7 small fixes committed directly on main, grouped by area (click an area to open it). The wording comes from the fix's own commit message; security-related fixes are described only generically. Each branch name links to its last commit on GitHub, and a ReactOS JIRA ticket is named where we found a clear match.
 
 <details><summary>Kernel: Ke, HAL and amd64 (32 fixes)</summary>
 
@@ -417,9 +417,10 @@ These reactos-nitro fixes address bugs reported in the [ReactOS JIRA](https://ji
 
 </details>
 
-<details><summary>WoW64 (34 fixes)</summary>
+<details><summary>WoW64 (36 fixes)</summary>
 
 - CMAKE: Keep WoW64 table generation out of default native builds ([fix/wow64-native-i386-stubs](https://github.com/tomassrnka/reactos/commit/427fc062520d7e3b17ff659b3069c161e2e53d29))
+- KERNEL32: Accept the DEP mitigation attribute from a WOW64 guest on amd64 ([fix/kernel32-wow64-dep-attribute](https://github.com/tomassrnka/reactos/commit/7656641d8873930456bf62bf09a7dceb394a5cb7))
 - MSI: Treat a failed window enumeration like an incomplete list ([fix/msi-wow64-ca-honest](https://github.com/tomassrnka/reactos/commit/30b77862d886031f32fa6c5a93011c462c8a9da3))
 - NTDLL: Initialize the native TLS list in WoW64 processes ([fix/wow64-tc32-tlslist](https://github.com/tomassrnka/reactos/commit/c8ac8e964823995f0372e99d61140a4ed1045552))
 - NTDLL/WOW64: Keep the guest APC routine out of the callee's home space ([fix/wow64-ff32-apc-home-space](https://github.com/tomassrnka/reactos/commit/029c1d6e96cac503d72d1e0f0ad09364afd70b83))
@@ -427,6 +428,7 @@ These reactos-nitro fixes address bugs reported in the [ReactOS JIRA](https://ji
 - NTOS:KE: Load the WoW64 FS base of a thread attached to another process ([fix/wow64-tc32-cmteb](https://github.com/tomassrnka/reactos/commit/6a317eb5731f82f6c6f6f873245359b3637cb378))
 - NTOS:PS: Declare the WoW64 flag of PspSetProcessTlsInformation only where it is used ([fix/wow64-ff32-dynamic-tls](https://github.com/tomassrnka/reactos/commit/5f549a72d6f88fb0f25ff3e42df4f5f12a47a86d))
 - NTUSER: Keep the client area when the frame changes in place ([fix/wow64-tc32-lister-framechanged](https://github.com/tomassrnka/reactos/commit/e124449b5127881897433df4335e711f0408a26d))
+- RTL: Report the 32-bit modules of a WOW64 process in the debug buffer ([fix/tasklist-wow64-modules](https://github.com/tomassrnka/reactos/commit/483f4066939838fd03aa888fc74d12d1a82c959e))
 - SYSWOW64: Install dwrite.dll and user32_vista.dll for 32-bit programs ([fix/wow64-ff32-syswow64-deps](https://github.com/tomassrnka/reactos/commit/a97cf79b13568e0c6d2a6db4897b3331170a2c9f))
 - USER32: Align the MsgWaitForMultipleObjectsEx wait structure ([fix/wow64-idle-msgloop-spin](https://github.com/tomassrnka/reactos/commit/34fc0328e8efc8fc43c4af3d36c316e9d87a9f04))
 - WOW64: Translate console screen buffer, code page, language and shutdown CSR calls ([fix/wow64-console-csr-batch](https://github.com/tomassrnka/reactos/commit/ae268e8250677a0c6e6bd80d04be4918dce1d763))
@@ -734,9 +736,10 @@ These reactos-nitro fixes address bugs reported in the [ReactOS JIRA](https://ji
 
 </details>
 
-<details><summary>Browser, COM and Wine imports (13 fixes)</summary>
+<details><summary>Browser, COM and Wine imports (14 fixes)</summary>
 
 - APISETS: Resolve the WinRT apisets to combase ([fix/apisets-winrt-combase](https://github.com/tomassrnka/reactos/commit/5d2d3b66f0a4cde0eb29aaa2a68bb1827d4d8407))
+- CRYPTBASE: Add cryptbase.dll forwarder DLL ([fix/cryptbase-forwarder](https://github.com/tomassrnka/reactos/commit/ed7e480a123842e879f066d018f1690ddf7227c3))
 - IFMON: Show the lease of a DHCP adapter in "show config" ([fix/ifmon-show-dhcp-config](https://github.com/tomassrnka/reactos/commit/8c740f01d7eff86f308c0bec93518fc9d4cd8713))
 - KTMW32/NTDLL: Add ktmw32 and fail transactions cleanly ([fix/ktmw32-transactions](https://github.com/tomassrnka/reactos/commit/83fb6fec74596288346c30904b8c4b27dd369962))
 - MSHTML: Read the raw HTTP headers as the ANSI text they are ([fix/mshtml-http-headers-ansi](https://github.com/tomassrnka/reactos/commit/e18fda464e0d89d4fd23cdb635d51f378ace5b9f))
@@ -790,11 +793,12 @@ These reactos-nitro fixes address bugs reported in the [ReactOS JIRA](https://ji
 
 </details>
 
-<details><summary>Build, toolchain and API surface (9 fixes)</summary>
+<details><summary>Build, toolchain and API surface (10 fixes)</summary>
 
 - APISETS: fix a security-related bug ([fix/apisets-real-hosts](https://github.com/tomassrnka/reactos/commit/b229be0aa30a1833363d455f6adc203ed950df35))
 - APISETS: Host the shcore contracts that shcore implements in shcore.dll ([fix/apisets-shcore-hosts](https://github.com/tomassrnka/reactos/commit/b4d75640680f176f52ca9db5cb1bbedfea07acc2))
 - APISETS/NTDLL: Ignore the minor version and the manifest when resolving API sets ([fix/apisets-minor-manifest](https://github.com/tomassrnka/reactos/commit/3ad4c066e85b6ac494e793c5791f594fc8c35825))
+- include: About: keep the upstream version lines and fit the Nitro lines ([fix/nitro-version-string](https://github.com/tomassrnka/reactos/commit/75a6134fb6aa46ad3625efae9c13880d7cf90bbb))
 - PSDK/CABINET_APITEST: Do not pack FDINOTIFICATION to 4 bytes on x64 ([fix/cabinet-fdi-x64-layout](https://github.com/tomassrnka/reactos/commit/2a6e7f5b31bef3c04a393d458c5f06adf736af9b))
 - RTL/KERNEL32: Implement RtlFormatMessageEx and format messages through it ([fix/formatmessage-rtl-v2](https://github.com/tomassrnka/reactos/commit/9edb16a53513c90c1ed2b2e56517118fb7670f5b))
 - RTL/TZLIB: Identify the current time zone by its key name alone ([fix/auto-dst-disabled](https://github.com/tomassrnka/reactos/commit/67694f3c2b21eafce9b6c68702b53914ce61ec03))
@@ -804,7 +808,7 @@ These reactos-nitro fixes address bugs reported in the [ReactOS JIRA](https://ji
 
 </details>
 
-<details><summary>Tests only (25 fixes)</summary>
+<details><summary>Tests only (26 fixes)</summary>
 
 - ADVAPI32_APITEST: tests for a security-related fix [test-only] ([fix/logon-user-processes](https://github.com/tomassrnka/reactos/commit/1f5ab40693d094654ee904f131bca926fdff82cd))
 - APITESTS: Link WoW64 services in static RTL tests [test-only] [pick] ([main/wow64-rtl-unittest-link](https://github.com/tomassrnka/reactos/commit/7426aa673f03210c7d54b155b8d4ee380e14c6bc))
@@ -825,6 +829,7 @@ These reactos-nitro fixes address bugs reported in the [ReactOS JIRA](https://ji
 - ROSAUTOTEST: Keep the --list for a module pattern that ends in "test" [test-only] ([fix/rosautotest-named-test](https://github.com/tomassrnka/reactos/commit/3aa9063d912a8970cc74089e0df617a7e2726626))
 - ROSAUTOTEST: Do not lose the rest of a run to a pipe left open by a test [test-only] ([fix/rosautotest-unique-pipe](https://github.com/tomassrnka/reactos/commit/9ebb183b5479b072e3b06356e382f02ed71cde0f))
 - SETUPAPI_APITEST: tests for a security-related fix [test-only] ([fix/pnproot-double-free](https://github.com/tomassrnka/reactos/commit/7814ea2076dfdddd3c3c5aaf0406b8a488645fdc))
+- stackoverflow-amd64-frame: tests for a security-related fix [test-only] ([fix/stackoverflow-amd64-frame](https://github.com/tomassrnka/reactos/commit/d3855aa29e0afa2af91be4cbafc76cddabc496f8))
 - stackoverflowthread-t1-timeout: tests for a security-related fix [test-only] ([fix/stackoverflowthread-t1-timeout](https://github.com/tomassrnka/reactos/commit/a9524479ba1002b57379c4559b6b52a2dec8f475))
 - USERENV_APITEST: Delete read-only, hidden and system entries in the DeleteProfile test [test-only] ([fix/userenv-deleteprofile-test-attrs](https://github.com/tomassrnka/reactos/commit/44a0a189344bafb96d8f47787be4e2d9adec5887))
 - USERENV_APITEST: DeleteProfile: use todo_if(is_reactos()) for the loaded-hive check [test-only] ([fix/userenv-deleteprofile-todo](https://github.com/tomassrnka/reactos/commit/12a4463321e093a864ffc3285017d3a6d507d098))
@@ -838,9 +843,7 @@ These reactos-nitro fixes address bugs reported in the [ReactOS JIRA](https://ji
 ### Limitations
 
 - Firefox sandbox: on 64-bit it starts at default levels but restrictions are not enforced (a test that tries to create files in 5 places: all denied on Windows 10, all allowed here). Do not treat the build as sandboxed. 32-bit Firefox runs with the sandbox off.
-- 32-bit Firefox ignores its first command-line URL (a fix is not on main yet).
-- Dragging 32-bit Total Commander over another window leaves smears.
-- Firefox ESR 140 and later do not run (they need cryptbase.dll); 128.14 is the newest that runs. The Firefox installers (NSIS) only run with the Windows 10 compatibility layer set.
+- Firefox ESR 140 and later do not fully run yet: `cryptbase.dll` is now provided, but they still need `QueryUnbiasedInterruptTimePrecise`, which ReactOS does not implement. ESR 128 is the tested version. The Firefox installers (NSIS) only run with the Windows 10 compatibility layer set.
 - Known flaky areas: 32-bit Firefox https tab sometimes never loads (2 of about 8 runs); 64-bit Firefox parent spun at 95.7% CPU in 1 of 8 runs; about 3 of 45 boots hang in ipconfig before the network is up; the full test run shows 16 regressions against upstream, no bugchecks.
 - WoW64 is amd64 only and opt-in; some 32-bit system calls are not thunked yet (about 250 debug messages per Firefox run), some console calls from 32-bit console programs fail, CreateProfile fails in 32-bit processes, and the 32-bit Total Commander installers use `Program Files`.
 - NTFS: no repair tool beyond journal replay; a junction in the middle of a path returns an error; persistent-ACL support is not reported.
