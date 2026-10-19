@@ -6,6 +6,10 @@
 >
 > Like ReactOS itself, this is alpha-quality software. Don't use it on a machine or disk holding data you care about.
 
+**Last synced with ReactOS master:** [`ac1ab9e3043`](https://github.com/reactos/reactos/commit/ac1ab9e3043) (2026-10-18). We merge upstream regularly; this line tracks the most recent merge.
+
+**Docs:** [CHANGELOG](CHANGELOG.md) · [BENCHMARKS](BENCHMARKS.md) · [UPSTREAM](UPSTREAM.md)
+
 reactos-nitro is a large set of fixes and features maintained on top of upstream ReactOS master. Each release ships:
 
 - **the patch series**: one patch per topic, plus the exact upstream ReactOS commit it applies to;
