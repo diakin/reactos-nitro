@@ -13,6 +13,8 @@ reactos-nitro is a large set of fixes and features maintained on top of upstream
 - **ready-to-install ISOs** for amd64 (with WoW64) and i386;
 - **the full source tree** of the release, tagged in the [development fork](https://github.com/tomassrnka/reactos).
 
+See [UPSTREAM.md](UPSTREAM.md) for how reactos-nitro relates to upstream ReactOS and why our NTFS is a separate driver.
+
 ## Goals
 
 - **Usable for daily work:** real applications installed and running reliably, not only demos.
