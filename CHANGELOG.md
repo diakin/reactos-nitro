@@ -10,7 +10,7 @@ reactos-nitro is an unofficial patch set on top of upstream ReactOS. It is not a
 |---|---|
 | Release tag | `nitro-2026.10.2` → [`054e4af6a88`](https://github.com/tomassrnka/reactos/commit/054e4af6a88f283b3e149103ded67ac211562ba2) |
 | ReactOS base | upstream [`f53b1d15601`](https://github.com/reactos/reactos/commit/f53b1d1560120c529763b18963fdee68f39118af) (sync #3, 2026-10-19) |
-| Patch series | 52 topic patches on `f53b1d15601`; applied tree `e0cf06866f46` (== main) |
+| Patch series | 52 cumulative topic patches on `f53b1d15601` (2026.10.1's 48 + the 4 new this release, listed under Bug fixes); applied tree `e0cf06866f46` (== main) |
 | Artifacts | amd64-with-WoW64 ISO, i386 ISO, source tarball, patch series |
 
 ### Highlights
