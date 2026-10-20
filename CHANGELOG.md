@@ -42,7 +42,7 @@ Merged ReactOS master up to `f53b1d15601`: Wine-10.0 import of DCOMP, TBS, WEVTA
 Unchanged from 2026.10.1 — including that 32-bit Firefox under WoW64 renders only with its content sandbox disabled.
 
 ### Changes since the previous Nitro
-Upstream sync #3 + 4 security fixes. Gate 8/8; T1 (154 shards) zero batch-introduced regressions.
+This is a point release: the section above lists only what's **new in 2026.10.2** (upstream sync #3 + 4 security fixes). **2026.10.2 includes everything from 2026.10.1** — the full ~554 fixes and all feature tracks are in the [2026.10.1 section below](#reactos-nitro-20261). Gate 8/8; T1 (154 shards) zero batch-introduced regressions.
 
 ## reactos-nitro 2026.10.1
 
