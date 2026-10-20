@@ -35,7 +35,7 @@ Pre-release. The first release, `reactos-nitro-2026.10.1`, is in preparation. Un
 
 Over 520 fixes and several feature tracks on top of upstream ReactOS:
 
-- **32-bit Windows programs on 64-bit ReactOS (WoW64).** Total Commander and Firefox ESR, each in 32-bit and 64-bit builds, run side by side in one session. Upstream ReactOS has no WoW64.
+- **32-bit Windows programs on 64-bit ReactOS (WoW64).** Total Commander runs 32-bit and 64-bit side by side in one session, and Firefox ESR runs 64-bit; 32-bit Firefox launches but renders only with its content sandbox disabled (see [Known limitations](#known-limitations)). Upstream ReactOS has no WoW64.
 - **NTFS read/write**, with a new driver built on the Linux kernel's `fs/ntfs` (imported from Linux v7.3-rc6), plus journal and power-cut recovery. NTFS is the default file system for new installs.
 - **Btrfs**: WinBtrfs 1.10 (upstream ships 1.8.1).
 - **Multi-processor support on x86 and amd64**, installed by default on ACPI machines. It is tested from 1 to 16 vCPUs, with multi-hour soaks on AMD and Intel hosts.
