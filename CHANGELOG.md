@@ -2,6 +2,30 @@
 
 reactos-nitro is an unofficial patch set on top of upstream ReactOS. It is not an official ReactOS release and is not affiliated with the ReactOS project. Newest entry first. All times UTC.
 
+## reactos-nitro 2026.10.2 (DRAFT — in gate)
+
+**Draft of 2026-10-20.** A security + upstream-sync point release on top of `2026.10.1`. The security batch is in its release gate; shas marked _(TBD)_ are finalized when it passes. Not tagged, not published.
+
+| Item | Value |
+|---|---|
+| Release tag | `nitro-2026.10.2` _(TBD — on gate-green)_ |
+| ReactOS base | upstream [`f53b1d15601`](https://github.com/reactos/reactos/commit/f53b1d1560120c529763b18963fdee68f39118af) (sync #3, 2026-10-19) |
+| Builds on | fork `main` [`5adb85b02e3`](https://github.com/tomassrnka/reactos/commit/5adb85b02e3b4f6439c48a6f85fa0ca84a2cb020) + the security batch _(TBD)_ |
+
+### Upstream sync (#3)
+Merged ReactOS master up to `f53b1d15601`: Wine-10.0 import of **DCOMP**, **TBS**, **WEVTAPI** and **BCP47LANGS**, plus a basic **IShellItem2** implementation. The fork's kernel is kept byte-identical to the previous release (one upstream KE change was set aside to preserve the fork's cross-processor lock handling).
+
+### Security fixes
+- **amd64 kernel — MXCSR sanitization.** A thread context (`NtContinue`/`SetThreadContext`) with reserved MXCSR bits could fault the kernel after `swapgs`. User-supplied MXCSR is now masked to the processor-supported bits before it is loaded. _(fix/amd64-mxcsr-sanitize)_
+- **Kernel profiling — bounds checks.** `NtCreateProfile` / the profile object accepted an exclusive-endpoint sample (off-by-one) and truncated a 64-bit bucket count to 32 bits, allowing an out-of-bounds write to the counter buffer. Both are now bounds-checked. _(fix/ke-profile-bounds)_
+- **Process/thread integrity-label SACL.** Processes and threads now return a mandatory-label SACL like Windows (queryable with `LABEL_SECURITY_INFORMATION`), and a label-only SACL can be set without `SeSecurityPrivilege`. Also fixes an object-manager use-after-free in the insert-cleanup path and removes a stopgap that made every label query return `NOT_SUPPORTED`. (Also a prerequisite for Chromium/Electron-class apps.) _(fix/se-process-thread-integrity-label)_
+- **GDI `ExtEscape` — stack-memory disclosure.** An uninitialized result field could leak kernel stack bytes to user mode; now zero-initialized. _(fix/gdi-extescape-result-init)_
+
+### Known limitations
+Unchanged from 2026.10.1 — including that 32-bit Firefox under WoW64 renders only with its content sandbox disabled (see the 2026.10.1 entry).
+
+_In progress for a later release (not in 2026.10.2): restricted-token filtering (sandbox enforcement), a netkvm RX-DPC latency fix, and SMP-performance work._
+
 ## reactos-nitro 2026.10.1
 
 **Tagged `nitro-2026.10.1` (private) on 2026-10-19**, annotated tag at fork `main` [`c203b29276c`](https://github.com/tomassrnka/reactos/commit/c203b29276c5e7d4fc54177d8d999c54d5cb2a45). Gated green (both ISOs boot-tested; TC 32/64, WoW64-GUI, Firefox 64-bit, NTFS 4h soak, licence-clean all PASS). **Not yet public** — publication is held pending the FF32-under-WoW64 render fix (see Known limitations), a trademark check of the "reactos-nitro" name, and the NTFS driver licence-statement clean-up.
