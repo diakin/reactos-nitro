@@ -6,7 +6,7 @@
 >
 > Like ReactOS itself, this is alpha-quality software. Don't use it on a machine or disk holding data you care about.
 
-**Last synced with ReactOS master:** [`ac1ab9e3043`](https://github.com/reactos/reactos/commit/ac1ab9e3043) (2026-10-18). We merge upstream regularly; this line tracks the most recent merge.
+**Last synced with ReactOS master:** [`f53b1d15601`](https://github.com/reactos/reactos/commit/f53b1d1560120c529763b18963fdee68f39118af) (2026-10-19, sync #3). We merge upstream regularly; this line tracks the most recent merge. (The `nitro-2026.10.1` release is based on the earlier [`ac1ab9e3043`](https://github.com/reactos/reactos/commit/ac1ab9e3043), 2026-10-18.)
 
 **Docs:** [CHANGELOG](CHANGELOG.md) · [BENCHMARKS](BENCHMARKS.md) · [UPSTREAM](UPSTREAM.md)
 
@@ -52,7 +52,7 @@ A full list of changes, one line per fix, is in [CHANGELOG.md](CHANGELOG.md) (dr
 ## Known limitations
 
 - WoW64 is amd64 only.
-- The Firefox sandbox starts on 64-bit, but its restrictions are **not** enforced on ReactOS. 32-bit Firefox runs with its sandbox disabled.
+- **Firefox sandbox.** On 64-bit, the sandbox process starts but its restrictions are **not** enforced on ReactOS. On 32-bit (WoW64), the sandbox broker cannot spawn Firefox's child processes, so with the sandbox at its default setting **32-bit Firefox opens but web pages stay blank**. To browse in 32-bit Firefox you must disable its content sandbox (`security.sandbox.content.level = 0`), which is a security downgrade. 64-bit Firefox renders normally.
 - Some 32-bit applications leave redraw artifacts when dragged over other windows.
 - Firefox ESR 140 and later need components that ReactOS does not provide yet. ESR 128 is the tested version.
 - Everything in upstream ReactOS's own list of known issues also applies.

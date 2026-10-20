@@ -2,15 +2,16 @@
 
 reactos-nitro is an unofficial patch set on top of upstream ReactOS. It is not an official ReactOS release and is not affiliated with the ReactOS project. Newest entry first. All times UTC.
 
-## reactos-nitro 2026.10.1 (DRAFT)
+## reactos-nitro 2026.10.1
 
-Draft of 2026-10-19. Not tagged, not published. The name still needs a trademark check, and the history of the NTFS driver's branch needs a licence-statement clean-up before any public release.
+**Tagged `nitro-2026.10.1` (private) on 2026-10-19**, annotated tag at fork `main` [`c203b29276c`](https://github.com/tomassrnka/reactos/commit/c203b29276c5e7d4fc54177d8d999c54d5cb2a45). Gated green (both ISOs boot-tested; TC 32/64, WoW64-GUI, Firefox 64-bit, NTFS 4h soak, licence-clean all PASS). **Not yet public** — publication is held pending the FF32-under-WoW64 render fix (see Known limitations), a trademark check of the "reactos-nitro" name, and the NTFS driver licence-statement clean-up.
 
 | Item | Value |
 |---|---|
-| Nitro main | [`23dd8f7e336`](https://github.com/tomassrnka/reactos/commit/23dd8f7e3364d91f1e76d13d4b266625aca66cff), the fork's `main` on 2026-10-19 (landed 09:27 UTC). Release tag would be `nitro-2026.10.1` (not created). |
-| ReactOS base | upstream [`ac1ab9e3043`](https://github.com/reactos/reactos/commit/ac1ab9e30438dedbc1a2216db8ca8682f5fc871f) "[DISKPART] Sort the volumes list", committed 2026-10-18 11:12 UTC, merged into Nitro main the same evening. |
-| Patch series | `main-rebased-20261019` = [`7c9c9a3182d`](https://github.com/tomassrnka/reactos/commit/7c9c9a3182d4d38ad6446a9044be68ec0a6938e3), 47 topics on `ac1ab9e3043`, tree `b65d28d650895fec681824166ed9e423f71cbbb9`. It was generated from main [`5bccbfb1ee6`](https://github.com/tomassrnka/reactos/commit/5bccbfb1ee64d64fdc60b6d08af9f682ea123756), so it lacks the last two days of main (marked "main only" below). A newer stack is pending. |
+| Release tag | `nitro-2026.10.1` → [`c203b29276c`](https://github.com/tomassrnka/reactos/commit/c203b29276c5e7d4fc54177d8d999c54d5cb2a45) (private fork) |
+| ReactOS base | upstream [`ac1ab9e3043`](https://github.com/reactos/reactos/commit/ac1ab9e30438dedbc1a2216db8ca8682f5fc871f) "[DISKPART] Sort the volumes list", committed 2026-10-18 11:12 UTC |
+| Patch series | 48 topic patches on `ac1ab9e3043`, series head [`926768aba66`](https://github.com/tomassrnka/reactos/commit/926768aba66); applied tree byte-identical to the tag (`94e948f52aad`) |
+| Artifacts | amd64-with-WoW64 ISO (444,596,224 B), i386 ISO (391,118,848 B), source tarball, per-topic patch series — rebuilt from the series at release time (see RELEASE-PROCESS) |
 
 ### Highlights
 
