@@ -6,15 +6,43 @@ reactos-nitro is an unofficial patch set on top of upstream ReactOS. It is not a
 
 **Tagged `nitro-2026.10.2`** (2026-10-20) at fork `main` [`054e4af6a88`](https://github.com/tomassrnka/reactos/commit/054e4af6a88f283b3e149103ded67ac211562ba2). A security + upstream-sync point release on top of 2026.10.1.
 
-- **Base:** upstream ReactOS [`f53b1d15601`](https://github.com/reactos/reactos/commit/f53b1d1560120c529763b18963fdee68f39118af) (sync #3, 2026-10-19) — Wine-10.0 DCOMP/TBS/WEVTAPI/BCP47LANGS import + IShellItem2.
+| Item | Value |
+|---|---|
+| Release tag | `nitro-2026.10.2` → [`054e4af6a88`](https://github.com/tomassrnka/reactos/commit/054e4af6a88f283b3e149103ded67ac211562ba2) |
+| ReactOS base | upstream [`f53b1d15601`](https://github.com/reactos/reactos/commit/f53b1d1560120c529763b18963fdee68f39118af) (sync #3, 2026-10-19) |
+| Patch series | 52 topic patches on `f53b1d15601`; applied tree `e0cf06866f46` (== main) |
+| Artifacts | amd64-with-WoW64 ISO, i386 ISO, source tarball, patch series |
 
-### Security fixes
-- **amd64 MXCSR sanitization** — user-supplied MxCsr masked to processor-supported bits before load; a reserved-bit thread context can no longer GP-fault the kernel on `NtContinue`/`SetThreadContext` return-to-user. ([fix/amd64-mxcsr-sanitize](https://github.com/tomassrnka/reactos/commit/5c8a2ac7e054fea52e646251c8416c38be9a695b))
-- **Kernel profiling bounds** — `NtCreateProfile` accepted an off-by-one endpoint and a truncated 64-bit bucket count, allowing an out-of-bounds counter write; both bounds-checked. ([fix/ke-profile-bounds](https://github.com/tomassrnka/reactos/commit/77dbdcff4eba391b844a8359caeb8db3cf62baad))
-- **Process/thread integrity-label SACL** — processes and threads return a mandatory-label SACL like Windows; also fixes an object-manager use-after-free and removes a stopgap that returned `NOT_SUPPORTED` for every label query. (Also a prerequisite for Chromium/Electron-class apps.) ([fix/se-process-thread-integrity-label](https://github.com/tomassrnka/reactos/commit/1b6aa10b6e09d59b2d2789ea0f173898da88f0c0))
-- **GDI `ExtEscape` stack disclosure** — an uninitialized result could leak kernel stack bytes to user mode; now zero-initialized. ([fix/gdi-extescape-result-init](https://github.com/tomassrnka/reactos/commit/4748c129fd8b3e69f8317cba6ac7e89a41c7dfef))
+### Highlights
+4 security fixes plus upstream sync #3 (Wine-10.0 DCOMP/TBS/WEVTAPI/BCP47LANGS import + a basic IShellItem2). Gate 8/8, zero T1 regressions over the identical base.
 
-Gate: 8/8 PASS (builds i386+amd64 Debug+Release rc=0; T0 x4; KeProfile / MxCsrMask 26/26 / ProcessThreadLabel 658/658 / NtQuerySecurityObject 36/36; 30-min boot soak 0 bugchecks; T1 154 shards zero batch-introduced regressions). Known limitations unchanged from 2026.10.1.
+### What reactos-nitro adds on top of ReactOS
+#### Upstream sync (#3)
+Merged ReactOS master up to `f53b1d15601`: Wine-10.0 import of DCOMP, TBS, WEVTAPI and BCP47LANGS, plus a basic IShellItem2. The fork kernel is kept byte-identical to the previous release (one upstream KE change set aside to preserve the fork's cross-processor lock handling).
+
+## Bug fixes
+
+<details><summary>Kernel: Ke, HAL and amd64 (2 fixes)</summary>
+
+- NTOS:KE amd64: mask user-supplied MXCSR to the processor-supported bits before load, so a reserved-bit thread context can no longer GP-fault the kernel on `NtContinue`/`SetThreadContext` return-to-user ([fix/amd64-mxcsr-sanitize](https://github.com/tomassrnka/reactos/commit/5c8a2ac7e054fea52e646251c8416c38be9a695b))
+- NTOS:KE/EX: bounds-check the kernel profiling object — reject the exclusive endpoint and compute the bucket count as SIZE_T, preventing an out-of-bounds counter write ([fix/ke-profile-bounds](https://github.com/tomassrnka/reactos/commit/77dbdcff4eba391b844a8359caeb8db3cf62baad))
+</details>
+
+<details><summary>Kernel: Ob, Se, Ps, Ex and registry (1 fix)</summary>
+
+- NTOS:SE/OB: return a mandatory-label SACL on process and thread objects, as Windows does; also fixes an object-manager use-after-free in the insert-cleanup path and removes a stopgap that failed every label query ([fix/se-process-thread-integrity-label](https://github.com/tomassrnka/reactos/commit/1b6aa10b6e09d59b2d2789ea0f173898da88f0c0))
+</details>
+
+<details><summary>win32k, GDI and USER (1 fix)</summary>
+
+- WIN32K:GDI: initialize the `ExtEscape` result so the failure paths cannot return uninitialized kernel stack bytes to user mode ([fix/gdi-extescape-result-init](https://github.com/tomassrnka/reactos/commit/4748c129fd8b3e69f8317cba6ac7e89a41c7dfef))
+</details>
+
+### Limitations
+Unchanged from 2026.10.1 — including that 32-bit Firefox under WoW64 renders only with its content sandbox disabled.
+
+### Changes since the previous Nitro
+Upstream sync #3 + 4 security fixes. Gate 8/8; T1 (154 shards) zero batch-introduced regressions.
 
 ## reactos-nitro 2026.10.1
 
