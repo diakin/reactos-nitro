@@ -29,12 +29,121 @@ A broad security + stability + SMP release on the same base as 2026.10-2. Headli
 - **SMP:** per-CPU object-handle FirstFree cache (ABA-safe, kill-switch); per-CPU nonpaged pool descriptors; building on 2026.10-2's pool scaling.
 - **Stability/robustness:** ramdisk I/O-range OOB guard; process-quota underflow and limited-quota fixes; bounded OOM fault retry; device query-remove/eject; a real-hardware FreeLdr video-mode fallback (boots where a passed-through/real VBIOS disagrees with INT 10h).
 
-### Known limitations
+## Bug fixes
+
+<details><summary>Kernel: Ke, HAL and amd64 (2 fixes)</summary>
+
+- NTOS:KE/x64: do not copy undeclared exception parameters to user mode ([c2855982a39](https://github.com/tomassrnka/reactos/commit/c2855982a39))
+- SDK/RTL: do not leave the user pointer in `Dest` when `ProbeAndCaptureUnicodeString` fails to allocate ([fa8a0c7a7db](https://github.com/tomassrnka/reactos/commit/fa8a0c7a7db))
+</details>
+
+<details><summary>Kernel: Mm and Cc (10 fixes)</summary>
+
+- NTOS:MM: bound the `MmAccessFault` OOM retry taken under a held lock, so a low-memory fault can no longer spin forever ([fix/mm-mdl-oom-bounded](https://github.com/tomassrnka/reactos/commit/8267776f1825dcc46e362795c100c969176e34bf))
+- NTOS:MM: enforce a copy-on-write-aware maximum protection for image views ([6c3f58ed7ed](https://github.com/tomassrnka/reactos/commit/6c3f58ed7ed))
+- NTOS:MM: enforce the section maximum protection in `MmProtectSectionView` ([ef493c744eb](https://github.com/tomassrnka/reactos/commit/ef493c744eb))
+- NTOS:MM: do not trust the user buffer header in `MemorySectionName` ([efc948abe40](https://github.com/tomassrnka/reactos/commit/efc948abe40))
+- NTOS:MM: preserve both boundary pages in `MmZeroSegmentRange` (`CcZeroData`) ([059d9068f2f](https://github.com/tomassrnka/reactos/commit/059d9068f2f))
+- NTOS:EX/MM: true per-processor nonpaged small-block pool lookaside lists ([8cbd43795e2](https://github.com/tomassrnka/reactos/commit/8cbd43795e2))
+- NTOS:MM: per-descriptor nonpaged pool spinlock + descriptor array (slice 1/4) ([fc189f7bc18](https://github.com/tomassrnka/reactos/commit/fc189f7bc18))
+- NTOS:MM: wire nonpaged pool per-descriptor selection + header `PoolIndex` (slices 2+3/4) ([a1d5be35d5b](https://github.com/tomassrnka/reactos/commit/a1d5be35d5b))
+- NTOS:MM: activate per-CPU nonpaged pool descriptors (slice 4/4) ([aab06648164](https://github.com/tomassrnka/reactos/commit/aab06648164))
+- NTOS:EX/MM: restore lookaside depth adjustment, make the page-walk check DBG-only ([c01821e7e04](https://github.com/tomassrnka/reactos/commit/c01821e7e04))
+</details>
+
+<details><summary>Kernel: Ob, Se, Ps, Ex and registry (14 fixes)</summary>
+
+- NTOS:OB/EX: per-CPU object-handle `FirstFree` cache, ABA-safe, behind a kill-switch (SMP lever) ([fix/handle-percpu-cache](https://github.com/tomassrnka/reactos/commit/44b34bde1cb4eff496f71f35c14a76aaf9aaa3be))
+- NTOS:PS: fix a process-quota underflow on a self-block switch ([fix/ps-quota-selfblock-underflow](https://github.com/tomassrnka/reactos/commit/bfe5e8b940bc3e9fb33f72ea5072272e9499f951))
+- NTOS:OB: remove now-unused `Total` locals (fix i386 Debug `-Werror`) ([d461572b669](https://github.com/tomassrnka/reactos/commit/d461572b669))
+- NTOS:OB: per-processor cache-line-padded object-type counters ([475b1853035](https://github.com/tomassrnka/reactos/commit/475b1853035))
+- NTOS:PS: do not drop the process reference on quota-block allocation failure ([6f285d389ab](https://github.com/tomassrnka/reactos/commit/6f285d389ab))
+- NTOS:PS: honor requested pool limits in `PspSetQuotaLimits` ([9b8fd94d56e](https://github.com/tomassrnka/reactos/commit/9b8fd94d56e))
+- NTOS:PS: use the matching return threshold for paged and nonpaged pool quota ([e78f377052c](https://github.com/tomassrnka/reactos/commit/e78f377052c))
+- NTOS:PS: fix a wild write and uninitialized quota block in the limited-quota path ([a5d8172e23c](https://github.com/tomassrnka/reactos/commit/a5d8172e23c))
+- NTOS:PS: charge and return default-block pool quota without `PspQuotaLock` ([cc478a6962d](https://github.com/tomassrnka/reactos/commit/cc478a6962d))
+- NTOS:EX: do not trust the output buffer in `SystemProcessInformation` ([a3a0524b2be](https://github.com/tomassrnka/reactos/commit/a3a0524b2be))
+- NTOS:PS: reject a cross-process thread in `NtGetNextThread` ([a72b2cb8ee1](https://github.com/tomassrnka/reactos/commit/a72b2cb8ee1))
+- NTOS:PS: probe the user TLS slot in `ThreadZeroTlsCell` ([32a31cbba77](https://github.com/tomassrnka/reactos/commit/32a31cbba77))
+- NTOS:dbgk/kd64: fix a `SetInformation` fault taken under a mutex + the kd64 physical read/write command ([fix/kd64-dbgk-capture](https://github.com/tomassrnka/reactos/commit/8be3bf4b6a7e761bbccac47b98d614e769ca5b15))
+- SDK:CMLIB: reject undersized/unaligned hive cells before linking them (registry) ([cfe545a521e](https://github.com/tomassrnka/reactos/commit/cfe545a521e))
+</details>
+
+<details><summary>I/O manager and file-system libraries (3 fixes)</summary>
+
+- NTOS:IO: serialize PnP property-change events with the queue lock ([745246dd841](https://github.com/tomassrnka/reactos/commit/745246dd841))
+- MSFS: probe and capture `ReadTimeout` in `FileMailslotSetInformation` ([214bd796cb1](https://github.com/tomassrnka/reactos/commit/214bd796cb1))
+- NPFS: fix an output overflow and a PEPROCESS leak in `FSCTL_PIPE_QUERY_CLIENT_PROCESS` ([8bab9c5b36d](https://github.com/tomassrnka/reactos/commit/8bab9c5b36d))
+</details>
+
+<details><summary>win32k, GDI and USER (8 fixes)</summary>
+
+- WIN32K:GDI: user-pointer capture and size-math hardening (Astra#2) ([fix/win32k-gdi-usercapture](https://github.com/tomassrnka/reactos/commit/0bc42fa3afce25319b05be838a47bc1766c856e0))
+- WIN32K:GDI: `NtGdiCreateDIBSection` capture + `ppvBits` arbitrary-write fix ([fix/win32k-dibsection-capture](https://github.com/tomassrnka/reactos/commit/90f6d75990b47cc67c54afa317cba03e5f766a3b))
+- WIN32K: clipboard CF_DIB size check + `FamInfo` NULL-init ([fix/win32k-clipboard-faminfo](https://github.com/tomassrnka/reactos/commit/8112aa606f4c6a9476b58a1f4f80277180ec7db1))
+- WIN32K:USER: `NtUserGetAtomName` double-fetch ([fix/useratom-doublefetch](https://github.com/tomassrnka/reactos/commit/499b8487bd7602c03690c80226a8a18b137b69ca))
+- WIN32K:USER: `NtUserGetIconInfo` probe + leak; `SetWindowsHookEx` `ModuleName.Length` OOB ([fix/ntuser-geticon-hook](https://github.com/tomassrnka/reactos/commit/0938fcc82440a5196104ae973002605a76567ec4))
+- WIN32K:USER: `IntSetMenuInfo` kernel-pointer type-confusion EoP ([fix/menu-typeconfusion](https://github.com/tomassrnka/reactos/commit/b9ac8118a69d10b584966de921c9b6bfd3a1bfae))
+- WIN32SS:NTUSER: `NtUserSetWindowWord` OOB write when `cbwndExtra < 2` (unsigned underflow) ([0aeb445daec](https://github.com/tomassrnka/reactos/commit/0aeb445daec))
+- WIN32SS:ENG: reject an overflowing bitmap size in `SURFACE_AllocSurface` ([258179096ed](https://github.com/tomassrnka/reactos/commit/258179096ed))
+</details>
+
+<details><summary>WoW64 (2 fixes)</summary>
+
+- WoW64: amd64 fibers + `NtQuerySystemInformationEx` + wow64 test crashes ([fix/wow64-fiber-threadexit](https://github.com/tomassrnka/reactos/commit/cfcc82290cb59c031c40a09be468391b493a88e8))
+- WoW64: residual cross-process queries — `ProcessImageInformation`, `ThreadDescriptorTableEntry` ReturnLength, amd64 `Win32StartAddress` ([fix/wow64-residual-queries](https://github.com/tomassrnka/reactos/commit/ae88a070738a704844a15edb3c01a1e4a29a13cd))
+</details>
+
+<details><summary>Networking (4 fixes)</summary>
+
+- AFD: window-size SET_INFO use-after-free + enum-events overflow + METHOD_NEITHER arbitrary-write + transport-address leak ([fix/afd-cluster](https://github.com/tomassrnka/reactos/commit/09c310fbc8bc2e5292dccada6adc1490c157c1ad))
+- AFD: `AfdAccept` length + requestor-mode checks, `LockBuffers` probe, `AfdCreateSocket` EA over-read ([fix/afd-input-validation](https://github.com/tomassrnka/reactos/commit/52c66667ac3776306e261fc7400151ea69a30e98))
+- TCP/IP: non-admin TCP/UDP via an Everyone ACE + an explicit control-access gate for privileged requests ([fix/tcp-nonadmin-dacl](https://github.com/tomassrnka/reactos/commit/6d1cf318108fddd8f11a6162b304294f98e0b86f))
+- Network: time-bound the receive DPC so one pass cannot hold DISPATCH_LEVEL for seconds ([47b12cdea20](https://github.com/tomassrnka/reactos/commit/47b12cdea20))
+</details>
+
+<details><summary>Audio and multimedia (1 fix)</summary>
+
+- KS (kernel streaming): user-buffer capture — method/property/event double-fetch + type-confusion ([fix/ks-userbuffer-capture](https://github.com/tomassrnka/reactos/commit/53adfb2fadadf0e9d1a67a77c736cff5b01034a6))
+</details>
+
+<details><summary>Storage, USB, PnP and drivers (4 fixes)</summary>
+
+- mountmgr: IOCTL input validation ([fix/mountmgr-p1-ioctl-validation](https://github.com/tomassrnka/reactos/commit/701bb72d90524a2d0fa546f12dafebcf7284f22c))
+- ramdisk: `RamdiskReadWrite` OOB guard + NULL-MDL / uninit-relations / self-deadlock / loader-block / PnP-IRP fixes ([fix/ramdisk-native-bundle](https://github.com/tomassrnka/reactos/commit/91a039cb373ff4190693db851f468d2a2b99cf93))
+- kbdclass/mouclass: a second read no longer orphans a pending IRP ([fix/kbdmou-pendingirp](https://github.com/tomassrnka/reactos/commit/3732b730437d1958aaf6c6b0e58f1844c24cb73a))
+- PnP: device query-remove / eject / disable / uninstall, with correct veto (`CR_REMOVE_VETOED`) ([unit/queryremove](https://github.com/tomassrnka/reactos/commit/34d861c96fb6a1aa29c749a08543c1e495a95611))
+</details>
+
+<details><summary>Setup and boot (1 fix)</summary>
+
+- FreeLdr: do not assert on a BDA-vs-INT-10h video-mode mismatch, so it boots on real hardware / a passed-through GPU VBIOS ([fix/freeldr-pcvideo-bda](https://github.com/tomassrnka/reactos/commit/743b3ae0f9b2453c0d9dc55e34a8ed8375c3185c))
+</details>
+
+<details><summary>Browser, COM and Wine imports (1 fix)</summary>
+
+- MSHTML: do not re-set an unchanged link media, fixing an IE hang and runaway memory on `loadCSS` pages ([b8fc159f5ca](https://github.com/tomassrnka/reactos/commit/b8fc159f5ca))
+</details>
+
+<details><summary>Tests only (6 fixes)</summary>
+
+- kmtest: fix a `PsQuotaLimitedTrim` double-eval that tripped a teardown ASSERT (test-only) ([fix/quota-trim-bugcheck](https://github.com/tomassrnka/reactos/commit/1f283a97d74648cfcddf38729052a53897f56073))
+- KMTESTS: `PsQuotaLimited` tests for private quota blocks ([a80df7f7dc4](https://github.com/tomassrnka/reactos/commit/a80df7f7dc4))
+- MSFS_APITEST: `FileMailslotSetInformation` contract test ([4d9acd1d170](https://github.com/tomassrnka/reactos/commit/4d9acd1d170))
+- NPFS_APITEST: `FSCTL_PIPE_QUERY_CLIENT_PROCESS` contract test ([e85e6df6324](https://github.com/tomassrnka/reactos/commit/e85e6df6324))
+- NTDLL_APITEST: `SystemProcessInformation` image-name and fault tests ([ee26d6920f0](https://github.com/tomassrnka/reactos/commit/ee26d6920f0))
+- NTDLL_APITEST: `NtQueryVirtualMemory` `MemorySectionName` tests ([9a261367d2a](https://github.com/tomassrnka/reactos/commit/9a261367d2a))
+</details>
+
+### Limitations
 - 32-bit Firefox renders blank at the default sandbox (WoW64 sandbox limitation).
 - APIC HAL: single I/O-APIC, active-high; MADT polarity overrides not honored (real-hardware risk; QEMU-tolerated).
 - `accept()` returns `WSAEACCES` for all users — no inbound TCP servers yet; outbound/client TCP works.
 - Cross-process `WriteProcessMemory`/`VirtualProtectEx` into a remote process's image data sections fails — a side-effect of the W^X image-protection hardening in this release (breaks sandboxed Chromium/Electron children and code injectors; the hardening is kept, the remote-write path is fixed in a follow-up).
 - OS identity is `5.2.3790` (Server 2003); applications that require Windows 7 (e.g. current Firefox ESR) will refuse to run.
+
+### Changes since the previous Nitro
+On the same upstream base as 2026.10-2 (no new upstream sync). 56 changes on `main`'s first-parent spine since the `nitro-2026.10-2` tag: 22 reviewed fix-branch merges plus 34 direct commits — a kernel/win32k security sweep, SMP pool and handle-cache work, quota and Mm hardening, and storage/networking fixes (grouped above).
 
 ## reactos-nitro 2026.10-2
 
