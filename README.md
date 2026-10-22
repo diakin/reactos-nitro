@@ -29,7 +29,7 @@ See [UPSTREAM.md](UPSTREAM.md) for how reactos-nitro relates to upstream ReactOS
 
 ## Status
 
-Pre-release. The first release, `reactos-nitro-2026.10-1`, is in preparation. Until it's published, there are no downloads here.
+Latest build: **`reactos-nitro-2026.10-3`** (2026-10-22), on upstream base `f53b1d15601`. Releases are currently delivered as private draft builds (amd64-with-WoW64 ISO, i386 ISO, source + patch series) pending the public-release gates; see [CHANGELOG.md](CHANGELOG.md) for per-release detail and known limitations.
 
 ## Highlights
 

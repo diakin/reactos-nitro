@@ -2,6 +2,40 @@
 
 reactos-nitro is an unofficial patch set on top of upstream ReactOS. It is not an official ReactOS release and is not affiliated with the ReactOS project. Newest entry first. All times UTC.
 
+## reactos-nitro 2026.10-3
+
+**Tagged `nitro-2026.10-3`** (2026-10-22) at fork `main` [`92f4586f849`](https://github.com/tomassrnka/reactos/commit/92f4586f849d3e5bdc2538ff1e9374136b865721). A large security, stability and SMP point release on the same upstream base as 2026.10-2.
+
+| Item | Value |
+|---|---|
+| Release tag | `nitro-2026.10-3` → [`92f4586f849`](https://github.com/tomassrnka/reactos/commit/92f4586f849d3e5bdc2538ff1e9374136b865721) |
+| ReactOS base | upstream [`f53b1d15601`](https://github.com/reactos/reactos/commit/f53b1d1560120c529763b18963fdee68f39118af) (sync #3, 2026-10-20) — unchanged from 2026.10-2 |
+| Patch series | 47 topic patches on `f53b1d15601` (`main-rebased-20261022` → `9eeefc87b93`); applied tree `63dc72d7479` (== main) |
+| Artifacts | amd64-with-WoW64 ISO, i386 ISO, source tarball, patch series (sha256 below) |
+
+| Artifact | sha256 |
+|---|---|
+| reactos-nitro-2026.10-3-amd64-wow64.iso | `98f19a091d271e7cd5689c162dd120fe94b3d7fffd6b5583659f8cf6839a572c` |
+| reactos-nitro-2026.10-3-i386.iso | `afe05a0ed86c0fb965c165ef88a1a2f0a4e356c16a4c8a1ad4713a664d3fe65f` |
+| reactos-nitro-2026.10-3-src.tar.xz | `5b82c65a880ac4744ed20ddba56346c35cee41055dd84c93f2ba1da4b0d7d29b` |
+| reactos-nitro-2026.10-3-patch-series.tar.xz | `e6e46c5c02aeff4122bd0d4c85ab180bc06b34d74621d544033d77eb610f69f1` |
+
+### Highlights
+A broad security + stability + SMP release on the same base as 2026.10-2. Headline areas: a deep kernel/win32k security sweep (verified attack-surface seams in win32k GDI/USER capture, kernel streaming, AFD, mountmgr, keyboard/mouse class, dbgk/kd64, WoW64), non-admin TCP/UDP sockets, and two SMP throughput levers (per-CPU object-handle cache and per-CPU nonpaged pool). Gate: 4-config builds rc=0, both ISOs boot to desktop, reproducibility verified (rebased stack tree == main), and the T1 regression suite showed only known-flaky entries (0 attributable to this release).
+
+### What reactos-nitro adds on top of ReactOS
+- **Security sweep (Astra#2/#3 verified seams):** win32k GDI/USER user-pointer capture and size-math (`ExtEscape`, `CreateDIBSection` ppvBits, clipboard CF_DIB, menu/atom/icon/hook handlers); kernel-streaming user-buffer capture; AFD use-after-free / enum-events overflow / METHOD_NEITHER arbitrary-write / transport-address leak; mountmgr IOCTL validation; keyboard/mouse class pending-IRP handling; dbgk fault-under-mutex + kd64 physical R/W; WoW64 residual cross-process queries.
+- **Non-admin networking (T66):** standard users can open `\Device\Tcp` and create/bind/listen/connect TCP plus UDP; privileged control (ARP/route/IP-address writes) stays admin-gated behind an explicit access check.
+- **SMP:** per-CPU object-handle FirstFree cache (ABA-safe, kill-switch); per-CPU nonpaged pool descriptors; building on 2026.10-2's pool scaling.
+- **Stability/robustness:** ramdisk I/O-range OOB guard; process-quota underflow and limited-quota fixes; bounded OOM fault retry; device query-remove/eject; a real-hardware FreeLdr video-mode fallback (boots where a passed-through/real VBIOS disagrees with INT 10h).
+
+### Known limitations
+- 32-bit Firefox renders blank at the default sandbox (WoW64 sandbox limitation).
+- APIC HAL: single I/O-APIC, active-high; MADT polarity overrides not honored (real-hardware risk; QEMU-tolerated).
+- `accept()` returns `WSAEACCES` for all users — no inbound TCP servers yet; outbound/client TCP works.
+- Cross-process `WriteProcessMemory`/`VirtualProtectEx` into a remote process's image data sections fails — a side-effect of the W^X image-protection hardening in this release (breaks sandboxed Chromium/Electron children and code injectors; the hardening is kept, the remote-write path is fixed in a follow-up).
+- OS identity is `5.2.3790` (Server 2003); applications that require Windows 7 (e.g. current Firefox ESR) will refuse to run.
+
 ## reactos-nitro 2026.10-2
 
 **Tagged `nitro-2026.10-2`** (2026-10-20) at fork `main` [`054e4af6a88`](https://github.com/tomassrnka/reactos/commit/054e4af6a88f283b3e149103ded67ac211562ba2). A security + upstream-sync point release on top of 2026.10-1.
