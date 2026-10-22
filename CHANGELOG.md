@@ -2,15 +2,15 @@
 
 reactos-nitro is an unofficial patch set on top of upstream ReactOS. It is not an official ReactOS release and is not affiliated with the ReactOS project. Newest entry first. All times UTC.
 
-## reactos-nitro 2026.10.2
+## reactos-nitro 2026.10-2
 
-**Tagged `nitro-2026.10.2`** (2026-10-20) at fork `main` [`054e4af6a88`](https://github.com/tomassrnka/reactos/commit/054e4af6a88f283b3e149103ded67ac211562ba2). A security + upstream-sync point release on top of 2026.10.1.
+**Tagged `nitro-2026.10-2`** (2026-10-20) at fork `main` [`054e4af6a88`](https://github.com/tomassrnka/reactos/commit/054e4af6a88f283b3e149103ded67ac211562ba2). A security + upstream-sync point release on top of 2026.10-1.
 
 | Item | Value |
 |---|---|
-| Release tag | `nitro-2026.10.2` → [`054e4af6a88`](https://github.com/tomassrnka/reactos/commit/054e4af6a88f283b3e149103ded67ac211562ba2) |
+| Release tag | `nitro-2026.10-2` → [`054e4af6a88`](https://github.com/tomassrnka/reactos/commit/054e4af6a88f283b3e149103ded67ac211562ba2) |
 | ReactOS base | upstream [`f53b1d15601`](https://github.com/reactos/reactos/commit/f53b1d1560120c529763b18963fdee68f39118af) (sync #3, 2026-10-19) |
-| Patch series | 52 cumulative topic patches on `f53b1d15601` (2026.10.1's 48 + the 4 new this release, listed under Bug fixes); applied tree `e0cf06866f46` (== main) |
+| Patch series | 52 cumulative topic patches on `f53b1d15601` (2026.10-1's 48 + the 4 new this release, listed under Bug fixes); applied tree `e0cf06866f46` (== main) |
 | Artifacts | amd64-with-WoW64 ISO, i386 ISO, source tarball, patch series |
 
 ### Highlights
@@ -39,18 +39,18 @@ Merged ReactOS master up to `f53b1d15601`: Wine-10.0 import of DCOMP, TBS, WEVTA
 </details>
 
 ### Limitations
-Unchanged from 2026.10.1 — including that 32-bit Firefox under WoW64 renders only with its content sandbox disabled.
+Unchanged from 2026.10-1 — including that 32-bit Firefox under WoW64 renders only with its content sandbox disabled.
 
 ### Changes since the previous Nitro
-This is a point release: the section above lists only what's **new in 2026.10.2** (upstream sync #3 + 4 security fixes). **2026.10.2 includes everything from 2026.10.1** — the full ~554 fixes and all feature tracks are in the [2026.10.1 section below](#reactos-nitro-20261). Gate 8/8; T1 (154 shards) zero batch-introduced regressions.
+This is a point release: the section above lists only what's **new in 2026.10-2** (upstream sync #3 + 4 security fixes). **2026.10-2 includes everything from 2026.10-1** — the full ~554 fixes and all feature tracks are in the [2026.10-1 section below](#reactos-nitro-20261). Gate 8/8; T1 (154 shards) zero batch-introduced regressions.
 
-## reactos-nitro 2026.10.1
+## reactos-nitro 2026.10-1
 
-**Tagged `nitro-2026.10.1` (private) on 2026-10-19**, annotated tag at fork `main` [`c203b29276c`](https://github.com/tomassrnka/reactos/commit/c203b29276c5e7d4fc54177d8d999c54d5cb2a45). Gated green (both ISOs boot-tested; TC 32/64, WoW64-GUI, Firefox 64-bit, NTFS 4h soak, licence-clean all PASS). **Not yet public** — publication is held pending the FF32-under-WoW64 render fix (see Known limitations), a trademark check of the "reactos-nitro" name, and the NTFS driver licence-statement clean-up.
+**Tagged `nitro-2026.10-1` (private) on 2026-10-19**, annotated tag at fork `main` [`c203b29276c`](https://github.com/tomassrnka/reactos/commit/c203b29276c5e7d4fc54177d8d999c54d5cb2a45). Gated green (both ISOs boot-tested; TC 32/64, WoW64-GUI, Firefox 64-bit, NTFS 4h soak, licence-clean all PASS). **Not yet public** — publication is held pending the FF32-under-WoW64 render fix (see Known limitations), a trademark check of the "reactos-nitro" name, and the NTFS driver licence-statement clean-up.
 
 | Item | Value |
 |---|---|
-| Release tag | `nitro-2026.10.1` → [`c203b29276c`](https://github.com/tomassrnka/reactos/commit/c203b29276c5e7d4fc54177d8d999c54d5cb2a45) (private fork) |
+| Release tag | `nitro-2026.10-1` → [`c203b29276c`](https://github.com/tomassrnka/reactos/commit/c203b29276c5e7d4fc54177d8d999c54d5cb2a45) (private fork) |
 | ReactOS base | upstream [`ac1ab9e3043`](https://github.com/reactos/reactos/commit/ac1ab9e30438dedbc1a2216db8ca8682f5fc871f) "[DISKPART] Sort the volumes list", committed 2026-10-18 11:12 UTC |
 | Patch series | 48 topic patches on `ac1ab9e3043`, series head [`926768aba66`](https://github.com/tomassrnka/reactos/commit/926768aba66); applied tree byte-identical to the tag (`94e948f52aad`) |
 | Artifacts | amd64-with-WoW64 ISO (444,596,224 B), i386 ISO (391,118,848 B), source tarball, per-topic patch series — rebuilt from the series at release time (see RELEASE-PROCESS) |
@@ -79,7 +79,7 @@ For each area: what upstream ReactOS has at the base commit, then what reactos-n
 **ReactOS master ([`ac1ab9e3043`](https://github.com/reactos/reactos/commit/ac1ab9e3043)):**
 - Not supported: there is no `dll/wow64`, and process creation reports "WOW64 is not supported yet" ([CORE-17655](https://jira.reactos.org/browse/CORE-17655)).
 
-**reactos-nitro 2026.10.1:**
+**reactos-nitro 2026.10-1:**
 - 32-bit Windows programs run on the 64-bit build (amd64 only; on in the WoW64 ISO).
 - SysWOW64, system-call and win32k thunks, file-system and registry redirection, and 32-bit consoles, windows, threads and process creation.
 - Total Commander 11.58 and Firefox ESR 128, each 32-bit and 64-bit, run side by side in one session.
@@ -89,7 +89,7 @@ For each area: what upstream ReactOS has at the base commit, then what reactos-n
 **ReactOS master ([`ac1ab9e3043`](https://github.com/reactos/reactos/commit/ac1ab9e3043)):**
 - The original ReactOS NTFS driver, with install support and write enabled by default on a normal install. It is still labelled experimental (the enabling registry value is named `MyDataDoesNotMatterSoEnableExperimentalWriteSupportForEveryNTFSVolume`), partial (several operations still return STATUS_NOT_IMPLEMENTED), and has no journaling or power-cut recovery.
 
-**reactos-nitro 2026.10.1:**
+**reactos-nitro 2026.10-1:**
 - `ntfsng`, a read/write NTFS driver built on the Linux kernel's `fs/ntfs` ([Linux v7.3-rc6](https://github.com/tomassrnka/reactos/commit/77c12ef7d52bc291a0243ef5aeac1fa79c8b69cd), imported unmodified; GPL-2.0-or-later except two MIT files), running through a compatibility layer.
 - Journaling with replay after a power cut, and a boot-time consistency check.
 - NTFS is the default system file system, and setup preselects it.
@@ -99,7 +99,7 @@ For each area: what upstream ReactOS has at the base commit, then what reactos-n
 **ReactOS master ([`ac1ab9e3043`](https://github.com/reactos/reactos/commit/ac1ab9e3043)):**
 - WinBtrfs 1.8.1.
 
-**reactos-nitro 2026.10.1:**
+**reactos-nitro 2026.10-1:**
 - [WinBtrfs 1.10](https://github.com/maharmstone/btrfs#changelog), which brings in 1.8.2, 1.9 and 1.10:
 -   - the block group tree from Linux 6.1;
 -   - writing free-space bitmaps and compressed inline files;
@@ -113,7 +113,7 @@ For each area: what upstream ReactOS has at the base commit, then what reactos-n
 **ReactOS master ([`ac1ab9e3043`](https://github.com/reactos/reactos/commit/ac1ab9e3043)):**
 - The VBE/Bochs `framebuf` driver draws straight into video memory.
 
-**reactos-nitro 2026.10.1:**
+**reactos-nitro 2026.10-1:**
 - A shadow framebuffer: drawing goes to a cached surface and only changed areas are copied to video memory, which makes window dragging smooth and cheap.
 - USB UHCI polling and software-pointer fixes, so pointer movement doesn't flicker.
 
@@ -123,7 +123,7 @@ For each area: what upstream ReactOS has at the base commit, then what reactos-n
 - amd64: the processor start-up routines (`KeStartAllProcessors`, `HalStartNextProcessor`) are stubs, so amd64 runs on one processor.
 - i386: an MP kernel and HAL are built, but setup selects the single-processor kernel.
 
-**reactos-nitro 2026.10.1:**
+**reactos-nitro 2026.10-1:**
 - Multi-processor kernels on x86 and amd64; setup installs the MP kernel and HAL on ACPI machines.
 - Tested from 1 to 16 vCPUs, with long soaks on AMD and Intel hosts.
 - Much faster cross-processor thread hand-off and wake-up.
@@ -136,7 +136,7 @@ For each area: what upstream ReactOS has at the base commit, then what reactos-n
 **ReactOS master ([`ac1ab9e3043`](https://github.com/reactos/reactos/commit/ac1ab9e3043)):**
 - The lwIP-based TCP/IP driver and AFD.
 
-**reactos-nitro 2026.10.1:**
+**reactos-nitro 2026.10-1:**
 - A reworked receive path: lwIP core lock, in-order TCP receive per adapter, fewer thread hops and reassembly locking.
 - 57 networking fixes: AFD connect, accept and cancel paths, TCP/IP, Winsock and iphlpapi.
 
@@ -145,7 +145,7 @@ For each area: what upstream ReactOS has at the base commit, then what reactos-n
 **ReactOS master ([`ac1ab9e3043`](https://github.com/reactos/reactos/commit/ac1ab9e3043)):**
 - NTFS install support (formatter and boot sector) and the C:\Users profile layout.
 
-**reactos-nitro 2026.10.1:**
+**reactos-nitro 2026.10-1:**
 - The graphical setup preselects NTFS.
 - The C:\Users layout, with fixes for shell calls that crash in upstream's stubs, and a read-only Downloads folder.
 - Windows-style legacy links (`Documents and Settings`, `Default`, `ProgramData`).
@@ -156,7 +156,7 @@ For each area: what upstream ReactOS has at the base commit, then what reactos-n
 **ReactOS master ([`ac1ab9e3043`](https://github.com/reactos/reactos/commit/ac1ab9e3043)):**
 - Only the `diskmgmt.msc` console file; there is no Disk Management implementation.
 
-**reactos-nitro 2026.10.1:**
+**reactos-nitro 2026.10-1:**
 - Disk Management (`diskmgmt.msc`) as a standalone application with a Windows-like disk list and graphical layout view. It isn't built on ReactOS's in-progress MMC; porting it to MMC is planned.
 - Covers basic, extended and GPT disks, SAS disks and optical drives.
 - Disk operations:
@@ -173,7 +173,7 @@ For each area: what upstream ReactOS has at the base commit, then what reactos-n
 **ReactOS master ([`ac1ab9e3043`](https://github.com/reactos/reactos/commit/ac1ab9e3043)):**
 - Wine-based `iexplore` with mshtml/urlmon/wininet. Wine Gecko is not provided on amd64.
 
-**reactos-nitro 2026.10.1:**
+**reactos-nitro 2026.10-1:**
 - Wine Gecko is provided on amd64, and `iexplore` offers to install Gecko when it's missing.
 - File downloads work: download dialogs and engine in ieframe, `DoFileDownload` from shdocvw, and content the page can't show is handed to the download path.
 - Fixes:
@@ -184,7 +184,7 @@ For each area: what upstream ReactOS has at the base commit, then what reactos-n
 
 #### Other
 
-**reactos-nitro 2026.10.1:**
+**reactos-nitro 2026.10-1:**
 - ARM3 commit charging with a commit limit, so over-commit fails with STATUS_COMMITMENT_LIMIT, plus special-pool debugging.
 - LCD text rendering and bundled open fonts.
 - Crash dumps, Application Error event 1000 and a Windows 7-style crash dialog.

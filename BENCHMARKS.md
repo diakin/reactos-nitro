@@ -1,6 +1,6 @@
 # Benchmarks — reactos-nitro vs ReactOS master
 
-> **DRAFT / preliminary.** These numbers were measured on a development build (batch 87, `23dd8f7e336`), **not** the tagged `2026.10.1` release, and will be re-run on the release build before launch. Two outliers (marked †) are large enough that they need an independent re-check. Read this as a direction, not final figures.
+> **DRAFT / preliminary.** These numbers were measured on a development build (batch 87, `23dd8f7e336`), **not** the tagged `2026.10-1` release, and will be re-run on the release build before launch. Two outliers (marked †) are large enough that they need an independent re-check. Read this as a direction, not final figures.
 
 Measured 2026-10-19 on one AMD EPYC 9254 host under QEMU/KVM, 4 vCPU / 2 GB, both sides built Release from the same sources.
 

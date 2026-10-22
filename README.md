@@ -6,7 +6,7 @@
 >
 > Like ReactOS itself, this is alpha-quality software. Don't use it on a machine or disk holding data you care about.
 
-**Last synced with ReactOS master:** [`f53b1d15601`](https://github.com/reactos/reactos/commit/f53b1d1560120c529763b18963fdee68f39118af) (2026-10-19, sync #3). We merge upstream regularly; this line tracks the most recent merge. (The `nitro-2026.10.1` release is based on the earlier [`ac1ab9e3043`](https://github.com/reactos/reactos/commit/ac1ab9e3043), 2026-10-18.)
+**Last synced with ReactOS master:** [`f53b1d15601`](https://github.com/reactos/reactos/commit/f53b1d1560120c529763b18963fdee68f39118af) (2026-10-19, sync #3). We merge upstream regularly; this line tracks the most recent merge. (The `nitro-2026.10-1` release is based on the earlier [`ac1ab9e3043`](https://github.com/reactos/reactos/commit/ac1ab9e3043), 2026-10-18.)
 
 **Docs:** [CHANGELOG](CHANGELOG.md) · [BENCHMARKS](BENCHMARKS.md) · [UPSTREAM](UPSTREAM.md)
 
@@ -29,7 +29,7 @@ See [UPSTREAM.md](UPSTREAM.md) for how reactos-nitro relates to upstream ReactOS
 
 ## Status
 
-Pre-release. The first release, `reactos-nitro-2026.10.1`, is in preparation. Until it's published, there are no downloads here.
+Pre-release. The first release, `reactos-nitro-2026.10-1`, is in preparation. Until it's published, there are no downloads here.
 
 ## Highlights
 
